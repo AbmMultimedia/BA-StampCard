@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Created by Anders on 03-11-2014.
  */
+
 public class Shop {
 
     private int id;
@@ -16,7 +17,7 @@ public class Shop {
     private List<PriceListProduct> priceList;
 
     //Constructor
-    public void Shop(String name, String address, String postalCode, String city){
+    public Shop(String name, String address, String postalCode, String city){
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
