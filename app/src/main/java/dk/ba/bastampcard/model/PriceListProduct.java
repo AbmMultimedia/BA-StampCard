@@ -4,15 +4,30 @@ package dk.ba.bastampcard.model;
  * Created by Anders on 03-11-2014.
  */
 public class PriceListProduct {
+    private int id;
     private float price;
     private Product product;
+    private Shop shop;
 
-    public PriceListProduct(Product product, float price) {
+    public PriceListProduct(Product product, Shop shop, float price) {
         this.product = product;
+        this.shop = shop;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public float getPrice() {
         return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }

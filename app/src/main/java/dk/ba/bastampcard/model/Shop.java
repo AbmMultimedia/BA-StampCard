@@ -8,7 +8,6 @@ import java.util.List;
  */
 
 public class Shop {
-
     private int id;
     private String name;
     private String address;
@@ -70,7 +69,7 @@ public class Shop {
 
     //Add product to price list
     public void addPriceListProduct(Product product, float price){
-        PriceListProduct priceListProduct = new PriceListProduct(product, price);
+        PriceListProduct priceListProduct = new PriceListProduct(product, this, price);
         priceList.add(priceListProduct);
     }
 }
