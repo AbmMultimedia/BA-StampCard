@@ -2,9 +2,10 @@
 <resources>
 
     <string name="app_name">BA Stamp Card</string>
-    <string name="title_activity_main">Shops</string>
+    <string name="title_activity_main">Caféer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="list_item_shop_distance">Distance</string>
+    <string name="list_item_shop_distance">Afstand</string>
+
 </resources>

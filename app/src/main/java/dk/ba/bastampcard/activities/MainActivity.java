@@ -1,20 +1,74 @@
 package dk.ba.bastampcard.activities;
 
 import android.app.Activity;
+import android.app.ListActivity;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dk.ba.bastampcard.R;
 import dk.ba.bastampcard.helpers.SQLiteHelper;
+import dk.ba.bastampcard.helpers.ShopListAdapter;
+import dk.ba.bastampcard.model.Shop;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
+
+    private List<Shop> shops;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SQLiteHelper database = new SQLiteHelper(getApplicationContext());
+
+        shops = new ArrayList<Shop>();
+        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
+        Shop shopTwo = new Shop("Cafe Phenix", "Valby Langgade 74", "2500", "Valby");
+        Shop shopThree = new Shop("Café Ultimatum", "Nordre Fasanvej 267", "2200", "København");
+
+        shops.add(shopOne);
+        shops.add(shopTwo);
+        shops.add(shopThree);
+
+        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+                "Linux", "OS/2" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.list_item_shop, R.id.list_item_shop_name, values);
+
+        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
+        setListAdapter(shopListAdapter);
+    }
+
+    public void getGeolocation(View view) throws IOException {
+        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
+
+        double shopLatitude;
+        double shopLongitude;
+
+        Geocoder geocoder = new Geocoder(this);
+        String shopLocation = shopOne.getAddress() + ", " + shopOne.getPostalCode() + ", " + shopOne.getCity();
+        //Log.d(this.getClass().getName(), shopLocation);
+        List<Address> addresses =  geocoder.getFromLocationName("london",1);
+        Log.d(this.getClass().getName(), "addresses :" + addresses.size());
+        Address shopAddress = addresses.get(0);
+        String locality = shopAddress.getLocality();
+        Log.d(this.getClass().getName(), locality);
+
+        if(addresses.size() > 0) {
+            shopLatitude = addresses.get(0).getLatitude();
+            shopLongitude = addresses.get(0).getLongitude();
+        }
     }
 
 

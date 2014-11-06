@@ -1,7 +1,14 @@
 package dk.ba.bastampcard.model;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.util.Log;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Anders on 03-11-2014.
@@ -72,4 +79,11 @@ public class Shop {
         PriceListProduct priceListProduct = new PriceListProduct(product, this, price);
         priceList.add(priceListProduct);
     }
+
+    public float getDistance(Context context, double currentlatitude, double currentLongitude) throws IOException {
+        float distance = 2000;
+
+        return distance;
+    }
+
 }

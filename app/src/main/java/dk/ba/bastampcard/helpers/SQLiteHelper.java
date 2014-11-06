@@ -21,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        Log.d(CLASS_NAME, "Create database");
         CLASS_NAME = getClass().getName();
     }
 
