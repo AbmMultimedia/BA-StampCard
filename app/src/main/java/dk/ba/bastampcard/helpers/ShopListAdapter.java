@@ -37,11 +37,14 @@ public class ShopListAdapter extends ArrayAdapter<Shop> {
         TextView shopDistance = (TextView) convertView.findViewById(R.id.list_item_shop_distance);
 
         shopName.setText(shop.getName());
-        try {
-            shopDistance.setText(Float.toString(shop.getDistance(getContext(), 1, 1)));
-        } catch (IOException e) {
-            Log.d(this.getClass().getName(), e.getMessage());
-            e.printStackTrace();
+        float distance = shop.getDistance(55, 12);
+        if(distance > 1000)
+        {
+            distance = distance/1000;
+            shopDistance.setText(Float.toString(distance) + " km");
+        }
+        else {
+            shopDistance.setText(Float.toString(distance) + " m");
         }
 
         return convertView;

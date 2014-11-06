@@ -20,6 +20,8 @@ public class ShopDBAdapter {
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_POSTAL = "postalCode";
     public static final String KEY_CITY = "city";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGITUDE = "longitude";
 
     //--- Table name ---
     private static final String DATABASE_SHOP_TABLE = "shop";
@@ -68,7 +70,7 @@ public class ShopDBAdapter {
 
     //--- retrieves all shop ---
     public Cursor getAllShops(){
-        return this.sDB.query(DATABASE_SHOP_TABLE, new String[] {KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, null, null, null, null, null);
+        return this.sDB.query(DATABASE_SHOP_TABLE, new String[] {KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY, KEY_LATITUDE, KEY_LONGITUDE}, null, null, null, null, null);
     }
 
     //--- retrieves a particular shop ---

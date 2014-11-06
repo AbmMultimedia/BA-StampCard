@@ -61,12 +61,19 @@ public class MainActivity extends ListActivity {
             String postalCode = shopCursor.getString(postalCodeIndex);
             int cityIndex = shopCursor.getColumnIndex(sDB.KEY_CITY);
             String city = shopCursor.getString(cityIndex);
+            int latitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LATITUDE);
+            Log.d("latitude index", Integer.toString(latitudeIndex));
+            double latitude = shopCursor.getDouble(latitudeIndex);
+            int longitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LONGITUDE);
+            double longitude = shopCursor.getDouble(longitudeIndex);
 
-            Shop shop = new Shop(name, address, postalCode, city);
+            Shop shop = new Shop(name, address, postalCode, city, latitude, longitude);
             shops.add(shop);
         }
 
         db.close();
+
+        Log.d(getClass().getName(), Integer.toString(shops.size()));
 
         ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
         setListAdapter(shopListAdapter);
