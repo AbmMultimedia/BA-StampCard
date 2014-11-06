@@ -3,8 +3,6 @@ package dk.ba.bastampcard.activities;
 import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,7 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -92,6 +90,11 @@ public class MainActivity extends ListActivity {
             double longitude = shopCursor.getDouble(longitudeIndex);
 
             Shop shop = new Shop(name, address, postalCode, city, latitude, longitude);
+
+            int idIndex = shopCursor.getColumnIndex(sDB.KEY_RowID);
+            int shopId = shopCursor.getInt(idIndex);
+            shop.setId(shopId);
+
             shops.add(shop);
         }
 
@@ -141,6 +144,12 @@ public class MainActivity extends ListActivity {
         public void onProviderDisabled(String s) {
             Toast.makeText(getApplicationContext(), "Gps is disabled", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Do something when a list item is clicked
+        Log.d("Shop id: ", v.getTag().toString());
+        Toast.makeText(getApplicationContext(), "Shop id: " + v.getTag().toString(),  Toast.LENGTH_SHORT).show();
     }
 
     @Override

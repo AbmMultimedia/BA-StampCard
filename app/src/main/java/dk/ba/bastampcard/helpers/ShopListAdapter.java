@@ -39,6 +39,9 @@ public class ShopListAdapter extends ArrayAdapter<Shop> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_shop, parent, false);
         }
 
+        convertView.setTag(shop.getId());
+        Log.d("SET TAG: ", Integer.toString(shop.getId()));
+
         TextView shopName = (TextView) convertView.findViewById(R.id.list_item_shop_name);
         TextView shopDistance = (TextView) convertView.findViewById(R.id.list_item_shop_distance);
 
