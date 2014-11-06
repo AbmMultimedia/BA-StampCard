@@ -20,6 +20,12 @@ import dk.ba.bastampcard.R;
 import dk.ba.bastampcard.helpers.SQLiteHelper;
 import dk.ba.bastampcard.helpers.ShopListAdapter;
 import dk.ba.bastampcard.model.Shop;
+import dk.ba.bastampcard.database.DBAdapter;
+import dk.ba.bastampcard.database.PriceListProductDBAdapter;
+import dk.ba.bastampcard.database.ProductDBAdapter;
+import dk.ba.bastampcard.database.PurchaseDBAdapter;
+import dk.ba.bastampcard.database.ShopDBAdapter;
+import dk.ba.bastampcard.database.UserDBAdapter;
 
 public class MainActivity extends ListActivity {
 
@@ -29,6 +35,13 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Log.d("start activity", "start");
+        DBAdapter db = new DBAdapter(this);
+        ShopDBAdapter sDB = new ShopDBAdapter(this);
+        UserDBAdapter uDB = new UserDBAdapter(this);
+        PurchaseDBAdapter purDB = new PurchaseDBAdapter(this);
+        ProductDBAdapter proDB = new ProductDBAdapter(this);
+        PriceListProductDBAdapter plpDB = new PriceListProductDBAdapter(this);
 
         shops = new ArrayList<Shop>();
         Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
@@ -71,6 +84,19 @@ public class MainActivity extends ListActivity {
         }
     }
 
+        //--- add a shop ---
+        db.open();
+        sDB.open();
+        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
+        uDB.open();
+        long userId = uDB.insertUser("Benedicte Veng Christensen");
+        purDB.open();
+        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
+        proDB.open();
+        long productId = proDB.insertProduct("Caffe Latte");
+        plpDB.open();
+        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
+        db.close();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
