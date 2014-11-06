@@ -7,6 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="stamps">Collected Stamps</string>
     <string name="useStamps">USE STAMPS</string>
+    <string name="GpsNotReady">GPS not ready</string>
 
     <string name="list_item_shop_distance">Distance</string>
 </resources>

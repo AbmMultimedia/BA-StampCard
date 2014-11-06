@@ -1,14 +1,21 @@
 package dk.ba.bastampcard.activities;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,14 +29,23 @@ import dk.ba.bastampcard.database.ShopDBAdapter;
 
 public class MainActivity extends ListActivity {
 
+    private LocationManager locManager;
+    private LocationListener locListener;
     private List<Shop> shops;
-    DBAdapter db;
-    ShopDBAdapter sDB;
+    private double latitude;
+    private double longitude;
+    private DBAdapter db;
+    private ShopDBAdapter sDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locListener = new ShopListLocationListener();
+
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
 
         shops = new ArrayList<Shop>();
         db = new DBAdapter(this);
@@ -41,10 +57,19 @@ public class MainActivity extends ListActivity {
             e.printStackTrace();
         }
 
+        getAllShops();
         showAllShops();
     }
 
-    private void showAllShops()
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        locManager.removeUpdates(locListener);
+        locManager = null;
+    }
+
+    private void getAllShops()
     {
         db.open();
         sDB.open();
@@ -62,7 +87,6 @@ public class MainActivity extends ListActivity {
             int cityIndex = shopCursor.getColumnIndex(sDB.KEY_CITY);
             String city = shopCursor.getString(cityIndex);
             int latitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LATITUDE);
-            Log.d("latitude index", Integer.toString(latitudeIndex));
             double latitude = shopCursor.getDouble(latitudeIndex);
             int longitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LONGITUDE);
             double longitude = shopCursor.getDouble(longitudeIndex);
@@ -72,14 +96,52 @@ public class MainActivity extends ListActivity {
         }
 
         db.close();
+    }
 
-        Log.d(getClass().getName(), Integer.toString(shops.size()));
-
-        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
+    private void showAllShops() {
+        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops, latitude, longitude);
         setListAdapter(shopListAdapter);
     }
 
 
+    public class ShopListLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            Log.d("Latitude:", Double.toString(latitude));
+            Log.d("Longitude:", Double.toString(longitude));
+            showAllShops();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle bundle) {
+            if(status == LocationProvider.AVAILABLE)
+            {
+                Toast.makeText(getApplicationContext(), "Gps ready", Toast.LENGTH_SHORT).show();
+            }
+            else if(status == LocationProvider.OUT_OF_SERVICE)
+            {
+                Toast.makeText(getApplicationContext(), "Gps signal not available", Toast.LENGTH_SHORT).show();
+            }
+            else if(status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+            {
+                Toast.makeText(getApplicationContext(), "Waiting for Gps signal", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            Toast.makeText(getApplicationContext(), "Gps is enabled", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            Toast.makeText(getApplicationContext(), "Gps is disabled", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

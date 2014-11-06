@@ -1,6 +1,8 @@
 package dk.ba.bastampcard.helpers;
 
 import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +20,13 @@ import dk.ba.bastampcard.model.Shop;
  * Created by Anders on 04-11-2014.
  */
 public class ShopListAdapter extends ArrayAdapter<Shop> {
+    private double latitude;
+    private double longitude;
 
-    public ShopListAdapter(Context context, List<Shop> shops) {
+    public ShopListAdapter(Context context, List<Shop> shops, double latitude, double longitude) {
         super(context, 0, shops);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -37,14 +43,19 @@ public class ShopListAdapter extends ArrayAdapter<Shop> {
         TextView shopDistance = (TextView) convertView.findViewById(R.id.list_item_shop_distance);
 
         shopName.setText(shop.getName());
-        float distance = shop.getDistance(55, 12);
-        if(distance > 1000)
+
+        if(latitude == 0 || longitude == 0)
         {
-            distance = distance/1000;
-            shopDistance.setText(Float.toString(distance) + " km");
+            shopDistance.setText(R.string.GpsNotReady);
         }
         else {
-            shopDistance.setText(Float.toString(distance) + " m");
+            float distance = shop.getDistance(latitude, longitude);
+            if (distance > 1000) {
+                distance = distance / 1000;
+                shopDistance.setText(Float.toString(distance) + " km");
+            } else {
+                shopDistance.setText(Float.toString(distance) + " m");
+            }
         }
 
         return convertView;
