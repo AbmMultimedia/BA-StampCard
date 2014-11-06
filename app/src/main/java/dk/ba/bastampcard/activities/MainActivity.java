@@ -43,6 +43,20 @@ public class MainActivity extends ListActivity {
         ProductDBAdapter proDB = new ProductDBAdapter(this);
         PriceListProductDBAdapter plpDB = new PriceListProductDBAdapter(this);
 
+        //--- add a shop ---
+        db.open();
+        sDB.open();
+        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
+        uDB.open();
+        long userId = uDB.insertUser("Benedicte Veng Christensen");
+        purDB.open();
+        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
+        proDB.open();
+        long productId = proDB.insertProduct("Caffe Latte");
+        plpDB.open();
+        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
+        db.close();
+
         shops = new ArrayList<Shop>();
         Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
         Shop shopTwo = new Shop("Cafe Phenix", "Valby Langgade 74", "2500", "Valby");
@@ -83,20 +97,6 @@ public class MainActivity extends ListActivity {
             shopLongitude = addresses.get(0).getLongitude();
         }
     }
-
-        //--- add a shop ---
-        db.open();
-        sDB.open();
-        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
-        uDB.open();
-        long userId = uDB.insertUser("Benedicte Veng Christensen");
-        purDB.open();
-        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
-        proDB.open();
-        long productId = proDB.insertProduct("Caffe Latte");
-        plpDB.open();
-        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
-        db.close();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
