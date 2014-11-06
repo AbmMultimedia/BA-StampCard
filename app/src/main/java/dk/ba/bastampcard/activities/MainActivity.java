@@ -1,8 +1,6 @@
 package dk.ba.bastampcard.activities;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.ba.bastampcard.R;
-import dk.ba.bastampcard.helpers.SQLiteHelper;
 import dk.ba.bastampcard.helpers.ShopListAdapter;
 import dk.ba.bastampcard.model.Shop;
 import dk.ba.bastampcard.database.DBAdapter;
