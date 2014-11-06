@@ -5,8 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by Benedicte on 04-11-2014.
@@ -16,6 +22,9 @@ public class DBAdapter {
     //---Logcat tag ---
     static final String TAG = "DBAdapter";
 
+    //The Android's default system path of your application database.
+    private static String DB_PATH = "/data/data/dk.ba.bastampcard/databases/";
+
     //--- Database name ---
     static final String DATABASE_NAME = "MyDB";
 
@@ -24,7 +33,7 @@ public class DBAdapter {
 
     //--- Table Create Statements ---
     //--- Shop table create statement ---
-    static final String CREATE_TABLE_SHOP = "create table shop(" +
+       static final String CREATE_TABLE_SHOP = "create table shop(" +
             ShopDBAdapter.KEY_RowID + " integer primary key autoincrement, " +
             ShopDBAdapter.KEY_NAME + " text not null, " +
             ShopDBAdapter.KEY_ADDRESS + " text not null, " +
@@ -68,12 +77,14 @@ public class DBAdapter {
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
+
         DatabaseHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db){ //Creates a new database if not exist
+            /**
             try {
                 db.execSQL(CREATE_TABLE_SHOP);
                 db.execSQL(CREATE_TABLE_USER);
@@ -82,8 +93,9 @@ public class DBAdapter {
                 db.execSQL(CREATE_TABLE_PriceListProduct);
                 Log.d("db", "database created");
             } catch (SQLException e){
-                e.printStackTrace();
+                Log.d(this.getClass().getName(), "Error: " + e.getMessage());
             }
+             **/
         }
 
         @Override
@@ -107,6 +119,65 @@ public class DBAdapter {
         DBHelper.close();
     }
 
+    public void createDataBase() throws IOException {
+        boolean dbExist = checkDataBase();
+
+        if(dbExist){
+            //do nothing - database already exist
+            Log.d(this.TAG, "Database exist");
+        }else{
+            //By calling this method and empty database will be created into the default system path
+            //of your application so we are gonna be able to overwrite that database with our database.
+            DBHelper.getReadableDatabase();
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                throw new Error("Error copying database");
+            }
+        }
+
+    }
+
+    private boolean checkDataBase(){
+        SQLiteDatabase checkDB = null;
+        try{
+            String myPath = DB_PATH + DATABASE_NAME;
+            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        }catch(SQLiteException e){
+            //database does't exist yet.
+            Log.d(this.TAG, "Database doest not exist" + e.getMessage());
+        }
+
+        if(checkDB != null){
+            checkDB.close();
+        }
+
+        return checkDB != null ? true : false;
+    }
+
+    private void copyDataBase() throws IOException{
+        //Open your local db as the input stream
+        InputStream myInput = context.getAssets().open(DATABASE_NAME);
+
+        // Path to the just created empty db
+        String outFileName = DB_PATH + DATABASE_NAME;
+
+        //Open the empty db as the output stream
+        OutputStream myOutput = new FileOutputStream(outFileName);
+
+        //transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = myInput.read(buffer))>0){
+            myOutput.write(buffer, 0, length);
+        }
+
+        //Close the streams
+        myOutput.flush();
+        myOutput.close();
+        myInput.close();
+    }
+
 
 //    public long insertShop(String name, String address, int postal, String city){
 //        ContentValues initialValues = new ContentValues();
@@ -123,19 +194,6 @@ public class DBAdapter {
 //        return db.delete(DATABASE_SHOP_TABLE, KEY_RowID + "=" + rowId, null) > 0;
 //    }
 //
-//    //--- retrieves all shop ---
-//    public Cursor getAllShops(){
-//        return db.query(DATABASE_SHOP_TABLE, new String[] {KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, null, null, null, null, null);
-//    }
-//
-//    //--- retrieves a particular shop ---
-//    public Cursor getShop(long rowId) throws SQLException{
-//        Cursor mCursor = db.query(true, DATABASE_SHOP_TABLE, new String[]{KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, KEY_RowID + "=" + rowId, null, null, null, null, null);
-//        if(mCursor != null){
-//            mCursor.moveToFirst();
-//        }
-//        return  mCursor;
-//    }
 //
 //    //--- updates a shop ---
 //    public boolean updateShop(long rowId, String name, String address, int postal, String city){

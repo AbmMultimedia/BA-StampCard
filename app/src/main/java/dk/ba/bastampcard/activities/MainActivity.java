@@ -1,6 +1,7 @@
 package dk.ba.bastampcard.activities;
 
 import android.app.ListActivity;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -27,48 +28,45 @@ import dk.ba.bastampcard.database.UserDBAdapter;
 public class MainActivity extends ListActivity {
 
     private List<Shop> shops;
+    DBAdapter db;
+    ShopDBAdapter sDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Log.d("start activity", "start");
-        DBAdapter db = new DBAdapter(this);
-        ShopDBAdapter sDB = new ShopDBAdapter(this);
-        UserDBAdapter uDB = new UserDBAdapter(this);
-        PurchaseDBAdapter purDB = new PurchaseDBAdapter(this);
-        ProductDBAdapter proDB = new ProductDBAdapter(this);
-        PriceListProductDBAdapter plpDB = new PriceListProductDBAdapter(this);
-
-        //--- add a shop ---
-        db.open();
-        sDB.open();
-        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
-        uDB.open();
-        long userId = uDB.insertUser("Benedicte Veng Christensen");
-        purDB.open();
-        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
-        proDB.open();
-        long productId = proDB.insertProduct("Caffe Latte");
-        plpDB.open();
-        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
-        db.close();
 
         shops = new ArrayList<Shop>();
-        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
-        Shop shopTwo = new Shop("Cafe Phenix", "Valby Langgade 74", "2500", "Valby");
-        Shop shopThree = new Shop("Café Ultimatum", "Nordre Fasanvej 267", "2200", "København");
+        db = new DBAdapter(this);
+        sDB = new ShopDBAdapter(this);
 
-        shops.add(shopOne);
-        shops.add(shopTwo);
-        shops.add(shopThree);
+        try {
+            db.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
+        db.open();
+        sDB.open();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.list_item_shop, R.id.list_item_shop_name, values);
+        Cursor shopCursor = sDB.getAllShops();
+
+        while(shopCursor.moveToNext())
+        {
+            int nameIndex = shopCursor.getColumnIndex(sDB.KEY_NAME);
+            String name = shopCursor.getString(nameIndex);
+            int addressIndex = shopCursor.getColumnIndex(sDB.KEY_ADDRESS);
+            String address = shopCursor.getString(addressIndex);
+            int postalCodeIndex = shopCursor.getColumnIndex(sDB.KEY_POSTAL);
+            String postalCode = shopCursor.getString(postalCodeIndex);
+            int cityIndex = shopCursor.getColumnIndex(sDB.KEY_CITY);
+            String city = shopCursor.getString(cityIndex);
+
+            Shop shop = new Shop(name, address, postalCode, city);
+            shops.add(shop);
+        }
+
+        db.close();
 
         ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
         setListAdapter(shopListAdapter);
@@ -94,6 +92,8 @@ public class MainActivity extends ListActivity {
             shopLongitude = addresses.get(0).getLongitude();
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
