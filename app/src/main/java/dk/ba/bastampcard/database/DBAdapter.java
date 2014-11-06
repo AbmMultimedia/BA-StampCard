@@ -31,6 +31,7 @@ public class DBAdapter {
     //--- Database version ---
     static final int DATABASE_VERSION = 5;
 
+    /**
     //--- Table Create Statements ---
     //--- Shop table create statement ---
        static final String CREATE_TABLE_SHOP = "create table shop(" +
@@ -67,6 +68,8 @@ public class DBAdapter {
             PriceListProductDBAdapter.KEY_ShopID + " integer not null, " +
             PriceListProductDBAdapter.KEY_PRICE + " integer not null);";
 
+     **/
+
     final Context context;
     DatabaseHelper DBHelper;
     SQLiteDatabase db;
@@ -84,18 +87,7 @@ public class DBAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db){ //Creates a new database if not exist
-            /**
-            try {
-                db.execSQL(CREATE_TABLE_SHOP);
-                db.execSQL(CREATE_TABLE_USER);
-                db.execSQL(CREATE_TABLE_PURCHASE);
-                db.execSQL(CREATE_TABLE_PRODUCT);
-                db.execSQL(CREATE_TABLE_PriceListProduct);
-                Log.d("db", "database created");
-            } catch (SQLException e){
-                Log.d(this.getClass().getName(), "Error: " + e.getMessage());
-            }
-             **/
+
         }
 
         @Override
@@ -177,31 +169,4 @@ public class DBAdapter {
         myOutput.close();
         myInput.close();
     }
-
-
-//    public long insertShop(String name, String address, int postal, String city){
-//        ContentValues initialValues = new ContentValues();
-//        initialValues.put(KEY_NAME, name);
-//        initialValues.put(KEY_ADDRESS, address);
-//        initialValues.put(KEY_POSTAL, postal);
-//        initialValues.put(KEY_CITY, city);
-//        return db.insert(DATABASE_SHOP_TABLE, null, initialValues);
-//    }
-
-//
-//    //--- deletes a particular shop ---
-//    public boolean deleteShop(long rowId){
-//        return db.delete(DATABASE_SHOP_TABLE, KEY_RowID + "=" + rowId, null) > 0;
-//    }
-//
-//
-//    //--- updates a shop ---
-//    public boolean updateShop(long rowId, String name, String address, int postal, String city){
-//        ContentValues args = new ContentValues();
-//        args.put(KEY_NAME, name);
-//        args.put(KEY_ADDRESS, address);
-//        args.put(KEY_POSTAL, postal);
-//        args.put(KEY_CITY, city);
-//        return db.update(DATABASE_SHOP_TABLE, args, KEY_RowID + "=" + rowId, null) > 0;
-//    }
 }

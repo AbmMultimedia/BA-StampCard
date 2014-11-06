@@ -20,14 +20,18 @@ public class Shop {
     private String address;
     private String postalCode;
     private String city;
+    private double latitude;
+    private double longitude;
     private List<PriceListProduct> priceList;
 
     //Constructor
-    public Shop(String name, String address, String postalCode, String city){
+    public Shop(String name, String address, String postalCode, String city, double latitude, double longitude){
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
 
         priceList = new ArrayList<PriceListProduct>();
     }
@@ -53,6 +57,10 @@ public class Shop {
         return city;
     }
 
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
     //Setters
     public void setId(int id) {
         this.id = id;
@@ -73,6 +81,10 @@ public class Shop {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
     //Add product to price list
     public void addPriceListProduct(Product product, float price){

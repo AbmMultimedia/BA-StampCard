@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,11 +18,7 @@ import dk.ba.bastampcard.R;
 import dk.ba.bastampcard.helpers.ShopListAdapter;
 import dk.ba.bastampcard.model.Shop;
 import dk.ba.bastampcard.database.DBAdapter;
-import dk.ba.bastampcard.database.PriceListProductDBAdapter;
-import dk.ba.bastampcard.database.ProductDBAdapter;
-import dk.ba.bastampcard.database.PurchaseDBAdapter;
 import dk.ba.bastampcard.database.ShopDBAdapter;
-import dk.ba.bastampcard.database.UserDBAdapter;
 
 public class MainActivity extends ListActivity {
 
@@ -46,6 +41,11 @@ public class MainActivity extends ListActivity {
             e.printStackTrace();
         }
 
+        showAllShops();
+    }
+
+    private void showAllShops()
+    {
         db.open();
         sDB.open();
 
@@ -70,27 +70,6 @@ public class MainActivity extends ListActivity {
 
         ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
         setListAdapter(shopListAdapter);
-    }
-
-    public void getGeolocation(View view) throws IOException {
-        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
-
-        double shopLatitude;
-        double shopLongitude;
-
-        Geocoder geocoder = new Geocoder(this);
-        String shopLocation = shopOne.getAddress() + ", " + shopOne.getPostalCode() + ", " + shopOne.getCity();
-        //Log.d(this.getClass().getName(), shopLocation);
-        List<Address> addresses =  geocoder.getFromLocationName("london",1);
-        Log.d(this.getClass().getName(), "addresses :" + addresses.size());
-        Address shopAddress = addresses.get(0);
-        String locality = shopAddress.getLocality();
-        Log.d(this.getClass().getName(), locality);
-
-        if(addresses.size() > 0) {
-            shopLatitude = addresses.get(0).getLatitude();
-            shopLongitude = addresses.get(0).getLongitude();
-        }
     }
 
 

@@ -6,6 +6,7 @@ package dk.ba.bastampcard.model;
 public class User {
     private int id;
     private String name;
+    private int stamps;
 
     //Constructor
     public User(String name) {
@@ -22,8 +23,7 @@ public class User {
     }
 
     public int getStamps() {
-        /* TODO Calculate numbers of stamps from the value of all purchase*/
-        return 5;
+        return stamps;
     }
 
     //Setters

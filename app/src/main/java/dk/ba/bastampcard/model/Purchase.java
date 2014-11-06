@@ -12,14 +12,16 @@ public class Purchase {
     private User user;
     private int confirmationCode;
     private float value;
+    private int quantity;
     private Date date;
 
-    public Purchase(Product product, Shop shop, User user, int confirmationCode, float value, Date date) {
+    public Purchase(Product product, Shop shop, User user, int confirmationCode, float value, int quantity, Date date) {
         this.product = product;
         this.shop = shop;
         this.user = user;
         this.confirmationCode = confirmationCode;
         this.value = value;
+        this.quantity = quantity;
         this.date = date;
     }
 
