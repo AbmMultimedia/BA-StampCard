@@ -2,6 +2,7 @@ package dk.ba.bastampcard.activities;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
@@ -45,16 +46,19 @@ public class MainActivity extends ListActivity {
 
         //--- add a shop ---
         db.open();
-        sDB.open();
-        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
-        uDB.open();
-        long userId = uDB.insertUser("Benedicte Veng Christensen");
-        purDB.open();
-        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
+//        sDB.open();
+//        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
+//        uDB.open();
+//        long userId = uDB.insertUser("Benedicte Veng Christensen");
+//        purDB.open();
+//        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
+
         proDB.open();
-        long productId = proDB.insertProduct("Caffe Latte");
-        plpDB.open();
-        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
+        long productId = proDB.insertProduct("Caffe Latte", 4, 5);
+        proDB.close();
+
+//        plpDB.open();
+//        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
         db.close();
 
         shops = new ArrayList<Shop>();
@@ -110,10 +114,21 @@ public class MainActivity extends ListActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.action_stamps:
+                intent = new Intent("dk.ba.bastampcard.activities.StampActivity");
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -20,7 +20,7 @@ public class DBAdapter {
     static final String DATABASE_NAME = "MyDB";
 
     //--- Database version ---
-    static final int DATABASE_VERSION = 5;
+    static final int DATABASE_VERSION = 6;
 
     //--- Table Create Statements ---
     //--- Shop table create statement ---
@@ -49,7 +49,9 @@ public class DBAdapter {
     //--- Product table create statement ---
     static final String CREATE_TABLE_PRODUCT = "create table product(" +
             ProductDBAdapter.KEY_ProductID + " integer primary key autoincrement, " +
-            ProductDBAdapter.KEY_ProductName + " text not null);";
+            ProductDBAdapter.KEY_ProductName + " text not null, " +
+            ProductDBAdapter.KEY_STAMPS + " integer not null, " +
+            ProductDBAdapter.KEY_LIMIT + " integer not null);";
 
     //--- PriceListProduct table create statement ---
     static final String CREATE_TABLE_PriceListProduct = "create table priceListProduct(" +
@@ -128,7 +130,7 @@ public class DBAdapter {
 //        return db.query(DATABASE_SHOP_TABLE, new String[] {KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, null, null, null, null, null);
 //    }
 //
-//    //--- retrieves a particular shop ---
+//    //--- retrieves a particular number of stamps ---
 //    public Cursor getShop(long rowId) throws SQLException{
 //        Cursor mCursor = db.query(true, DATABASE_SHOP_TABLE, new String[]{KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, KEY_RowID + "=" + rowId, null, null, null, null, null);
 //        if(mCursor != null){

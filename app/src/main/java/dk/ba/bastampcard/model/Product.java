@@ -8,7 +8,7 @@ public class Product {
     private String name;
 
     //Constructor
-    public Product(String name) {
+    public Product(String name, int scale) {
         this.name = name;
     }
 

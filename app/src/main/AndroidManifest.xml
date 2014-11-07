@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.StampActivity"
+            android:label="@string/menu_stamps">
+            <intent-filter>
+                <action android:name="dk.ba.bastampcard.activities.StampActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

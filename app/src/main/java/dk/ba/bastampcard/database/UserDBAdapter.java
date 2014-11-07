@@ -2,6 +2,7 @@ package dk.ba.bastampcard.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,6 +16,7 @@ public class UserDBAdapter {
     //--- User table - column names ---
     static final String KEY_UserID = "userId";
     static final String KEY_USERNAME = "userName";
+    static final String KEY_STAMPS = "stamps";
 
     //--- Table name ---
     private static final String DATABASE_USER_TABLE = "user";
@@ -52,9 +54,16 @@ public class UserDBAdapter {
     }
 
     //--- insert user into database ---
-    public long insertUser(String user){
+    public long insertUser(String user, int stamps){
         ContentValues values = new ContentValues();
         values.put(KEY_USERNAME, user);
+        values.put(KEY_STAMPS, stamps);
         return this.uDB.insert(DATABASE_USER_TABLE, null, values);
+    }
+
+    public Cursor getAllStamps() {
+        String selectQuery = "select " + KEY_STAMPS + " from " + DATABASE_USER_TABLE;
+        Cursor cursor = uDB.query(selectQuery, new String [] {KEY_UserID, KEY_USERNAME, KEY_STAMPS}, null, null, null, null, null);
+        return cursor;
     }
 }
