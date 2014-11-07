@@ -41,11 +41,6 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locListener = new ShopListLocationListener();
-
-        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
-
         shops = new ArrayList<Shop>();
         db = new DBAdapter(this);
         sDB = new ShopDBAdapter(this);
@@ -61,11 +56,25 @@ public class MainActivity extends ListActivity {
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locListener = new ShopListLocationListener();
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        locManager.removeUpdates(locListener);
+        locManager = null;
+    }
+    @Override
     protected void onStop()
     {
         super.onStop();
-        locManager.removeUpdates(locListener);
-        locManager = null;
     }
 
     private void getAllShops()
@@ -114,8 +123,6 @@ public class MainActivity extends ListActivity {
         public void onLocationChanged(Location location) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-            Log.d("Latitude:", Double.toString(latitude));
-            Log.d("Longitude:", Double.toString(longitude));
             showAllShops();
         }
 
@@ -123,7 +130,7 @@ public class MainActivity extends ListActivity {
         public void onStatusChanged(String provider, int status, Bundle bundle) {
             if(status == LocationProvider.AVAILABLE)
             {
-                Toast.makeText(getApplicationContext(), "Gps ready", Toast.LENGTH_SHORT).show();
+
             }
             else if(status == LocationProvider.OUT_OF_SERVICE)
             {
@@ -149,8 +156,11 @@ public class MainActivity extends ListActivity {
 
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Do something when a list item is clicked
-        Log.d("Shop id: ", v.getTag().toString());
-        Toast.makeText(getApplicationContext(), "Shop id: " + v.getTag().toString(),  Toast.LENGTH_SHORT).show();
+        int shopId = (Integer) v.getTag();
+        Intent intent = new Intent(getApplicationContext(), ShopLocationActivity.class);
+        intent.putExtra("SHOP_ID", shopId);
+        startActivity(intent);
+
     }
 
     @Override
@@ -162,23 +172,11 @@ public class MainActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
 
         Intent intent = null;
         switch (item.getItemId()){
             case R.id.action_stamps:
                 intent = new Intent("dk.ba.bastampcard.activities.StampActivity");
-                startActivity(intent);
-                return true;
-            case R.id.action_shop_location:
-                intent = new Intent(getApplicationContext(), ShopLocationActivity.class);
                 startActivity(intent);
                 return true;
             default:

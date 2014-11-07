@@ -35,11 +35,16 @@ public class ShopLocationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_location);
 
+        long shopId = 1;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            shopId = extras.getInt("SHOP_ID");
+        }
+
         db = new DBAdapter(this);
         sDB = new ShopDBAdapter(this);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
-        long shopId = 1;
         shop = getShopInfo(shopId);
 
         shopLocation = new LatLng(shop.getLatitude(), shop.getLongitude());
