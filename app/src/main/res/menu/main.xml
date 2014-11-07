@@ -6,7 +6,7 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
-    <item android:id="@+id/activity_shop_location"
+    <item android:id="@+id/action_shop_location"
         android:title="@string/title_activity_shop_location"
         android:orderInCategory="100"
         android:showAsAction="never" />

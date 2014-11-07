@@ -177,9 +177,12 @@ public class MainActivity extends ListActivity {
                 intent = new Intent("dk.ba.bastampcard.activities.StampActivity");
                 startActivity(intent);
                 return true;
+            case R.id.action_shop_location:
+                intent = new Intent(getApplicationContext(), ShopLocationActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
         
     }

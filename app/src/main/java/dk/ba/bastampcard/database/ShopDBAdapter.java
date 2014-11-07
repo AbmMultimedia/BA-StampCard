@@ -75,7 +75,7 @@ public class ShopDBAdapter {
 
     //--- retrieves a particular shop ---
     public Cursor getShop(long rowId) throws SQLException{
-        Cursor mCursor = this.sDB.query(true, DATABASE_SHOP_TABLE, new String[]{KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, KEY_RowID + "=" + rowId, null, null, null, null, null);
+        Cursor mCursor = this.sDB.query(true, DATABASE_SHOP_TABLE, new String[]{KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY, KEY_LATITUDE, KEY_LONGITUDE}, KEY_RowID + "=" + rowId, null, null, null, null, null);
         if(mCursor != null){
             mCursor.moveToFirst();
         }
