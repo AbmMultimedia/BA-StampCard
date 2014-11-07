@@ -1,105 +1,156 @@
 package dk.ba.bastampcard.activities;
 
-import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
+import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dk.ba.bastampcard.R;
-import dk.ba.bastampcard.helpers.SQLiteHelper;
 import dk.ba.bastampcard.helpers.ShopListAdapter;
 import dk.ba.bastampcard.model.Shop;
 import dk.ba.bastampcard.database.DBAdapter;
-import dk.ba.bastampcard.database.PriceListProductDBAdapter;
-import dk.ba.bastampcard.database.ProductDBAdapter;
-import dk.ba.bastampcard.database.PurchaseDBAdapter;
 import dk.ba.bastampcard.database.ShopDBAdapter;
-import dk.ba.bastampcard.database.UserDBAdapter;
 
 public class MainActivity extends ListActivity {
 
+    private LocationManager locManager;
+    private LocationListener locListener;
     private List<Shop> shops;
+    private double latitude;
+    private double longitude;
+    private DBAdapter db;
+    private ShopDBAdapter sDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Log.d("start activity", "start");
-        DBAdapter db = new DBAdapter(this);
-        ShopDBAdapter sDB = new ShopDBAdapter(this);
-        UserDBAdapter uDB = new UserDBAdapter(this);
-        PurchaseDBAdapter purDB = new PurchaseDBAdapter(this);
-        ProductDBAdapter proDB = new ProductDBAdapter(this);
-        PriceListProductDBAdapter plpDB = new PriceListProductDBAdapter(this);
 
-        //--- add a shop ---
-        db.open();
-//        sDB.open();
-//        long shopId = sDB.insertShop("KoffeeHouse", "Høvej 3", 2309, "Bisserup");
-//        uDB.open();
-//        long userId = uDB.insertUser("Benedicte Veng Christensen");
-//        purDB.open();
-//        long purchaseId = purDB.createPurchase(2, 2, 4, "A4-8976", 49, "20-09-2014");
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locListener = new ShopListLocationListener();
 
-        proDB.open();
-        long productId = proDB.insertProduct("Caffe Latte", 4, 5);
-        proDB.close();
-
-//        plpDB.open();
-//        long priceListProductId = plpDB.insertPriceListProduct(1, 3, 35);
-        db.close();
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
 
         shops = new ArrayList<Shop>();
-        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
-        Shop shopTwo = new Shop("Cafe Phenix", "Valby Langgade 74", "2500", "Valby");
-        Shop shopThree = new Shop("Café Ultimatum", "Nordre Fasanvej 267", "2200", "København");
+        db = new DBAdapter(this);
+        sDB = new ShopDBAdapter(this);
 
-        shops.add(shopOne);
-        shops.add(shopTwo);
-        shops.add(shopThree);
+        try {
+            db.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
+        getAllShops();
+        showAllShops();
+    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.list_item_shop, R.id.list_item_shop_name, values);
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        locManager.removeUpdates(locListener);
+        locManager = null;
+    }
 
-        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops);
+    private void getAllShops()
+    {
+        db.open();
+        sDB.open();
+
+        Cursor shopCursor = sDB.getAllShops();
+
+        while(shopCursor.moveToNext())
+        {
+            int nameIndex = shopCursor.getColumnIndex(sDB.KEY_NAME);
+            String name = shopCursor.getString(nameIndex);
+            int addressIndex = shopCursor.getColumnIndex(sDB.KEY_ADDRESS);
+            String address = shopCursor.getString(addressIndex);
+            int postalCodeIndex = shopCursor.getColumnIndex(sDB.KEY_POSTAL);
+            String postalCode = shopCursor.getString(postalCodeIndex);
+            int cityIndex = shopCursor.getColumnIndex(sDB.KEY_CITY);
+            String city = shopCursor.getString(cityIndex);
+            int latitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LATITUDE);
+            double latitude = shopCursor.getDouble(latitudeIndex);
+            int longitudeIndex = shopCursor.getColumnIndex(sDB.KEY_LONGITUDE);
+            double longitude = shopCursor.getDouble(longitudeIndex);
+
+            Shop shop = new Shop(name, address, postalCode, city, latitude, longitude);
+
+            int idIndex = shopCursor.getColumnIndex(sDB.KEY_RowID);
+            int shopId = shopCursor.getInt(idIndex);
+            shop.setId(shopId);
+
+            shops.add(shop);
+        }
+
+        db.close();
+    }
+
+    private void showAllShops() {
+        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops, latitude, longitude);
         setListAdapter(shopListAdapter);
     }
 
-    public void getGeolocation(View view) throws IOException {
-        Shop shopOne = new Shop("Shop 1", "Bymuren 106", "2650", "Hvidovre");
 
-        double shopLatitude;
-        double shopLongitude;
+    public class ShopListLocationListener implements LocationListener {
 
-        Geocoder geocoder = new Geocoder(this);
-        String shopLocation = shopOne.getAddress() + ", " + shopOne.getPostalCode() + ", " + shopOne.getCity();
-        //Log.d(this.getClass().getName(), shopLocation);
-        List<Address> addresses =  geocoder.getFromLocationName("london",1);
-        Log.d(this.getClass().getName(), "addresses :" + addresses.size());
-        Address shopAddress = addresses.get(0);
-        String locality = shopAddress.getLocality();
-        Log.d(this.getClass().getName(), locality);
-
-        if(addresses.size() > 0) {
-            shopLatitude = addresses.get(0).getLatitude();
-            shopLongitude = addresses.get(0).getLongitude();
+        @Override
+        public void onLocationChanged(Location location) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            Log.d("Latitude:", Double.toString(latitude));
+            Log.d("Longitude:", Double.toString(longitude));
+            showAllShops();
         }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle bundle) {
+            if(status == LocationProvider.AVAILABLE)
+            {
+                Toast.makeText(getApplicationContext(), "Gps ready", Toast.LENGTH_SHORT).show();
+            }
+            else if(status == LocationProvider.OUT_OF_SERVICE)
+            {
+                Toast.makeText(getApplicationContext(), "Gps signal not available", Toast.LENGTH_SHORT).show();
+            }
+            else if(status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+            {
+                Toast.makeText(getApplicationContext(), "Waiting for Gps signal", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            Toast.makeText(getApplicationContext(), "Gps is enabled", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            Toast.makeText(getApplicationContext(), "Gps is disabled", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Do something when a list item is clicked
+        Log.d("Shop id: ", v.getTag().toString());
+        Toast.makeText(getApplicationContext(), "Shop id: " + v.getTag().toString(),  Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -130,5 +181,6 @@ public class MainActivity extends ListActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+        
     }
 }

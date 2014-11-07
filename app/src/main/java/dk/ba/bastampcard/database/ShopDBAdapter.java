@@ -2,9 +2,11 @@ package dk.ba.bastampcard.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Benedicte on 05-11-2014.
@@ -13,11 +15,13 @@ public class ShopDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- Shop table - column names ---
-    static final String KEY_RowID = "shopId";
-    static final String KEY_NAME = "shopName";
-    static final String KEY_ADDRESS = "address";
-    static final String KEY_POSTAL = "postalCode";
-    static final String KEY_CITY = "city";
+    public static final String KEY_RowID = "_id";
+    public static final String KEY_NAME = "shopName";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_POSTAL = "postalCode";
+    public static final String KEY_CITY = "city";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGITUDE = "longitude";
 
     //--- Table name ---
     private static final String DATABASE_SHOP_TABLE = "shop";
@@ -62,5 +66,19 @@ public class ShopDBAdapter {
         values.put(KEY_POSTAL, postal);
         values.put(KEY_CITY, city);
         return this.sDB.insert(DATABASE_SHOP_TABLE, null, values);
+    }
+
+    //--- retrieves all shop ---
+    public Cursor getAllShops(){
+        return this.sDB.query(DATABASE_SHOP_TABLE, new String[] {KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY, KEY_LATITUDE, KEY_LONGITUDE}, null, null, null, null, null);
+    }
+
+    //--- retrieves a particular shop ---
+    public Cursor getShop(long rowId) throws SQLException{
+        Cursor mCursor = this.sDB.query(true, DATABASE_SHOP_TABLE, new String[]{KEY_RowID, KEY_NAME, KEY_ADDRESS, KEY_POSTAL, KEY_CITY}, KEY_RowID + "=" + rowId, null, null, null, null, null);
+        if(mCursor != null){
+            mCursor.moveToFirst();
+        }
+        return  mCursor;
     }
 }
