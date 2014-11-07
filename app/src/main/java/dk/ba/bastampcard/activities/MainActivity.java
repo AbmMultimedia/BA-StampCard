@@ -177,6 +177,9 @@ public class MainActivity extends ListActivity {
                 intent = new Intent("dk.ba.bastampcard.activities.StampActivity");
                 startActivity(intent);
                 return true;
+            case R.id.action_statistics:
+                intent = new Intent("dk.ba.bastampcard.activities.StatisticsActivity");
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
 

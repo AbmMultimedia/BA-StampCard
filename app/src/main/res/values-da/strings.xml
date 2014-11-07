@@ -3,11 +3,18 @@
 
     <string name="app_name">BA Stamp Card</string>
     <string name="title_activity_main">Caféer</string>
+    <string name="title_activity_stamps">Stempler</string>
+    <string name="title_activity_statistics">Statistik</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="GpsNotReady">GPS ikke klar</string>
 
     <string name="list_item_shop_distance">Afstand</string>
     <string name="stamps">Antal Stempler</string>
+
+    <!-- Tekst på statistik siden -->
+    <string name="statistics_table_date">Dato</string>
+    <string name="statistics_table_product">Product</string>
+    <string name="statistics_table_shop">Café</string>
 
 </resources>

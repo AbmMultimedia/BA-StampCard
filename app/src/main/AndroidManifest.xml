@@ -23,9 +23,17 @@
         </activity>
 
         <activity android:name=".activities.StampActivity"
-            android:label="@string/menu_stamps">
+            android:label="@string/title_activity_stamps">
             <intent-filter>
                 <action android:name="dk.ba.bastampcard.activities.StampActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.StatisticsActivity"
+            android:label="@string/title_activity_statistics">
+            <intent-filter>
+                <action android:name="dk.ba.bastampcard.activities.StatisticsActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

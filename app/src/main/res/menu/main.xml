@@ -4,11 +4,17 @@
     tools:context="dk.ba.bastampcard.activities.MainActivity" >
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1000"
         android:showAsAction="never" />
 
     <item android:id="@+id/action_stamps"
         android:title="@string/menu_stamps"
         android:orderInCategory="101"
         android:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_statistics"
+        android:title="@string/title_activity_statistics"
+        android:orderInCategory="102"
+        android:showAsAction="ifRoom|withText"/>
+
 </menu>
