@@ -1,13 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="dk.ba.bastampcard.activities.MainActivity" >
+    tools:context="dk.ba.bastampcard.activities.ShopLocationActivity" >
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
-    <item android:id="@+id/activity_shop_location"
-        android:title="@string/title_activity_shop_location"
         android:orderInCategory="100"
         android:showAsAction="never" />
 </menu>
