@@ -2,6 +2,7 @@ package dk.ba.bastampcard.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,9 +18,11 @@ public class ProductDBAdapter {
     //--- Product table - column names ---
     static final String KEY_ProductID = "productId";
     static final String KEY_ProductName = "productName";
+    public static final String KEY_STAMPS = "stamps";
+    static final String KEY_LIMIT = "scale";
 
     //--- Table name ---
-    private static final String DATABASE_PRODUCT_TABLE = "product";
+    public static final String DATABASE_PRODUCT_TABLE = "product";
 
     private final Context proContext;
     private DatabaseHelper proDBHelper;
@@ -53,9 +56,11 @@ public class ProductDBAdapter {
         this.proDBHelper.close();
     }
 
-    public long insertProduct(String productName){
+    public long insertProduct(String productName, int stamps, int scale){
         ContentValues values = new ContentValues();
         values.put(KEY_ProductName, productName);
+        values.put(KEY_STAMPS, stamps);
+        values.put(KEY_LIMIT, scale);
         return this.proDB.insert(DATABASE_PRODUCT_TABLE, null, values);
     }
 }

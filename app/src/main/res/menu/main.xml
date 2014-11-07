@@ -10,4 +10,9 @@
         android:title="@string/title_activity_shop_location"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item android:id="@+id/action_stamps"
+        android:title="@string/menu_stamps"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom|withText"/>
 </menu>

@@ -27,6 +27,14 @@
             android:name=".activities.ShopLocationActivity"
             android:label="@string/title_activity_shop_location" >
         </activity>
+
+        <activity android:name=".activities.StampActivity"
+            android:label="@string/menu_stamps">
+            <intent-filter>
+                <action android:name="dk.ba.bastampcard.activities.StampActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
