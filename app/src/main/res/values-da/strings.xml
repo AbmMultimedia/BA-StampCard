@@ -9,6 +9,7 @@
     <string name="action_settings">Settings</string>
     <string name="GpsNotReady">GPS ikke klar</string>
 
+    <string name="title_activity_shop_location">Cafeens placering</string>
     <string name="list_item_shop_distance">Afstand</string>
     <string name="stamps">Antal Stempler</string>
 

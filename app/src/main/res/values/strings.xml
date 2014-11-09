@@ -12,6 +12,8 @@
     <string name="GpsNotReady">GPS not ready</string>
 
     <string name="list_item_shop_distance">Distance</string>
+    <string name="title_activity_shop_location">Shop Location</string>
+
 
     <string name="menu_stamps">Stamps</string>
 
