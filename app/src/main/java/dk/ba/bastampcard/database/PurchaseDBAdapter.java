@@ -2,6 +2,7 @@ package dk.ba.bastampcard.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -67,5 +68,11 @@ public class PurchaseDBAdapter {
         values.put(KEY_VALUE, value);
         values.put(KEY_DATE, date);
         return this.purDB.insert(DATABASE_PURCHASE_TABLE, null, values);
+    }
+
+    public Cursor getStatistics(){
+        String query = "select pur.date, s.shopName, pro.productName from purchase pur join shop s on pur.shopId=s._id join product pro on pur.productId=pro._id";
+        Cursor cursor = purDB.rawQuery(query, null);
+        return cursor;
     }
 }

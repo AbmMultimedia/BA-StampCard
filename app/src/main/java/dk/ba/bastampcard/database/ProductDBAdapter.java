@@ -16,10 +16,8 @@ public class ProductDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- Product table - column names ---
-    static final String KEY_ProductID = "productId";
-    static final String KEY_ProductName = "productName";
-    public static final String KEY_STAMPS = "stamps";
-    static final String KEY_LIMIT = "scale";
+    public static final String KEY_ProductID = "productId";
+    public static final String KEY_ProductName = "productName";
 
     //--- Table name ---
     public static final String DATABASE_PRODUCT_TABLE = "product";
@@ -56,11 +54,14 @@ public class ProductDBAdapter {
         this.proDBHelper.close();
     }
 
-    public long insertProduct(String productName, int stamps, int scale){
+    public long insertProduct(String productName){
         ContentValues values = new ContentValues();
         values.put(KEY_ProductName, productName);
-        values.put(KEY_STAMPS, stamps);
-        values.put(KEY_LIMIT, scale);
         return this.proDB.insert(DATABASE_PRODUCT_TABLE, null, values);
+    }
+
+    //--- retrieves all products ---
+    public Cursor getAllProducts(){
+        return this.proDB.query(DATABASE_PRODUCT_TABLE, new String[] {KEY_ProductID, KEY_ProductName}, null, null, null, null, null);
     }
 }

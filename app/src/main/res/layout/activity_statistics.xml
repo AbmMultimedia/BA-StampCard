@@ -10,24 +10,28 @@
         android:layout_height="fill_parent">
 
         <TableRow>
-            <TextView android:text="@string/statistics_table_date"
+            <TextView android:id="@+id/statistics_cell_date"
+                android:text="@string/statistics_table_date"
                 android:textSize="@dimen/statistics_header"
                 android:layout_width="30dp"
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:gravity="center"/>
-            <TextView android:text="@string/statistics_table_product"
+            <TextView android:id="@+id/statistics_cell_shop"
+                android:text="@string/statistics_table_shop"
                 android:textSize="@dimen/statistics_header"
-                android:layout_width="50dp"
+                android:layout_width="70dp"
                 android:layout_column="1"
                 android:layout_weight="1"
                 android:gravity="center"/>
-            <TextView android:text="@string/statistics_table_shop"
+            <TextView android:id="@+id/statistics_cell_product"
+                android:text="@string/statistics_table_product"
                 android:textSize="@dimen/statistics_header"
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_column="2"
                 android:layout_weight="1"
                 android:gravity="center"/>
+
         </TableRow>
     </TableLayout>
 

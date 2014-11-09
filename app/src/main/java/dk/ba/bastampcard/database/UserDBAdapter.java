@@ -62,8 +62,15 @@ public class UserDBAdapter {
     }
 
     public Cursor getAllStamps() {
-        String selectQuery = "select " + KEY_STAMPS + " from " + DATABASE_USER_TABLE;
-        Cursor cursor = uDB.query(selectQuery, new String [] {KEY_UserID, KEY_USERNAME, KEY_STAMPS}, null, null, null, null, null);
+        Cursor cursor = uDB.query(DATABASE_USER_TABLE, new String [] {KEY_STAMPS}, null, null, null, null, null);
         return cursor;
     }
+
+    //set stamps to 0
+    public boolean updateStamps(){
+        ContentValues args = new ContentValues();
+        args.put(KEY_STAMPS, 0);
+        return uDB.update(DATABASE_USER_TABLE, args, null, null) > 0;
+    }
+
 }

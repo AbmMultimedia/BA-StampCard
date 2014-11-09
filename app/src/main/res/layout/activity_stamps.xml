@@ -29,7 +29,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:layout_marginTop="50dp"
-        android:onClick="onClickQRCode"
+        android:onClick="onClickUseStamps"
         android:layout_gravity="center" />
 
 </LinearLayout>

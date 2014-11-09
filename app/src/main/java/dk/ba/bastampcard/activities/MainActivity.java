@@ -182,6 +182,11 @@ public class MainActivity extends ListActivity {
             case R.id.action_statistics:
                 intent = new Intent("dk.ba.bastampcard.activities.StatisticsActivity");
                 startActivity(intent);
+                return true;
+            case R.id.action_weather:
+                intent = new Intent("dk.ba.bastampcard.activities.WeatherActivity");
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
