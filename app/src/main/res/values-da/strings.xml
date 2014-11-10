@@ -19,4 +19,8 @@
     <string name="statistics_table_product">Product</string>
     <string name="statistics_table_shop">Café</string>
 
+    <string name="title_activity_purchase">Køb</string>
+    <string name="register_purchase">Registrer køb</string>
+    <string name="scan_code">Scan kode</string>
+
 </resources>

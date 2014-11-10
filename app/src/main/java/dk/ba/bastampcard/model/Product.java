@@ -12,6 +12,10 @@ public class Product {
         this.name = name;
     }
 
+    public Product(int id) {
+        this.id = id;
+    }
+
     //Getters
     public int getId() {
         return id;

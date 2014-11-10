@@ -7,20 +7,18 @@ import java.util.Date;
  */
 public class Purchase {
     private int id;
-    private Product product;
+    private PriceListProduct priceListProduct;
     private Shop shop;
     private User user;
     private int confirmationCode;
-    private float value;
     private int quantity;
     private Date date;
 
-    public Purchase(Product product, Shop shop, User user, int confirmationCode, float value, int quantity, Date date) {
-        this.product = product;
+    public Purchase(PriceListProduct priceListProduct, Shop shop, User user, int confirmationCode, int quantity, Date date) {
+        this.priceListProduct = priceListProduct;
         this.shop = shop;
         this.user = user;
         this.confirmationCode = confirmationCode;
-        this.value = value;
         this.quantity = quantity;
         this.date = date;
     }
@@ -30,8 +28,8 @@ public class Purchase {
         return id;
     }
 
-    public Product getProduct() {
-        return product;
+    public PriceListProduct getPriceListProduct() {
+        return priceListProduct;
     }
 
     public Shop getShop() {
@@ -43,6 +41,8 @@ public class Purchase {
     }
 
     public float getValue() {
+        float price = this.priceListProduct.getPrice();
+        float value = price * quantity;
         return value;
     }
 

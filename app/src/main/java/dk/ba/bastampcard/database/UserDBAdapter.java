@@ -14,7 +14,7 @@ public class UserDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- User table - column names ---
-    static final String KEY_UserID = "userId";
+    static final String KEY_UserID = "_id";
     static final String KEY_USERNAME = "userName";
     static final String KEY_STAMPS = "stamps";
 

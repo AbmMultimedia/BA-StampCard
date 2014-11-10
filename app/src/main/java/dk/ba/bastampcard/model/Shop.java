@@ -37,6 +37,11 @@ public class Shop {
         priceList = new ArrayList<PriceListProduct>();
     }
 
+    public Shop(int id){
+        this.id = id;
+    }
+
+
     //Getters
     public int getId() {
         return id;

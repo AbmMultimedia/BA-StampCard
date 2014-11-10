@@ -15,7 +15,7 @@ public class PurchaseDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- Purchase table - column names ---
-    static final String KEY_PurchaseID = "purchaseId";
+    static final String KEY_PurchaseID = "_id";
     static final String KEY_PURCHASE_ProductID = "productId";
     static final String KEY_PURCHASE_ShopID = "shopId";
     static final String KEY_PURCHASE_UserID = "userId";

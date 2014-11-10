@@ -11,15 +11,17 @@
     <string name="stamps">Collected Stamps</string>
     <string name="useStamps">USE STAMPS</string>
     <string name="GpsNotReady">GPS not ready</string>
-
     <string name="list_item_shop_distance">Distance</string>
     <string name="title_activity_shop_location">Shop Location</string>
-
-
     <string name="menu_stamps">Stamps</string>
 
     <!-- Text on statistics activity -->
     <string name="statistics_table_date">Date</string>
     <string name="statistics_table_product">Product</string>
     <string name="statistics_table_shop">Shop</string>
+
+    <string name="title_activity_purchase">Purchase</string>
+    <string name="register_purchase">Register purchase</string>
+    <string name="scan_code">Scan code</string>
+
 </resources>

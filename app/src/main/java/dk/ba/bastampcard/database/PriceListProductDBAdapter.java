@@ -2,6 +2,7 @@ package dk.ba.bastampcard.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,10 +14,10 @@ public class PriceListProductDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- Product table - column names ---
-    static final String KEY_PriceListProductID = "priceListProductId";
-    static final String KEY_ProductID = "productId";
-    static final String KEY_ShopID = "shopId";
-    static final String KEY_PRICE = "price";
+    public static final String KEY_PriceListProductID = "_id";
+    public static final String KEY_ProductID = "productId";
+    public static final String KEY_ShopID = "shopId";
+    public static final String KEY_PRICE = "price";
 
     //--- Table name ---
     private static final String DATABASE_PriceListProduct_TABLE = "priceListProduct";
@@ -59,5 +60,17 @@ public class PriceListProductDBAdapter {
         values.put(KEY_ShopID, shopId);
         values.put(KEY_PRICE, price);
         return this.plpDB.insert(DATABASE_PriceListProduct_TABLE, null, values);
+    }
+
+    public Cursor getPriceListProduct(int productId, int shopId) throws SQLException{
+        Cursor mCursor = this.plpDB.query(
+                true,
+                DATABASE_PriceListProduct_TABLE,
+                new String[]{KEY_ProductID, KEY_ShopID, KEY_PRICE}, KEY_ProductID + "=" + productId + " AND " + KEY_ShopID + "=" + shopId ,
+                null, null, null, null, null);
+        if(mCursor != null){
+            mCursor.moveToFirst();
+        }
+        return  mCursor;
     }
 }

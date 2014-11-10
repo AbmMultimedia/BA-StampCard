@@ -16,7 +16,7 @@ public class ProductDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- Product table - column names ---
-    public static final String KEY_ProductID = "productId";
+    public static final String KEY_ProductID = "_id";
     public static final String KEY_ProductName = "productName";
 
     //--- Table name ---
@@ -63,5 +63,13 @@ public class ProductDBAdapter {
     //--- retrieves all products ---
     public Cursor getAllProducts(){
         return this.proDB.query(DATABASE_PRODUCT_TABLE, new String[] {KEY_ProductID, KEY_ProductName}, null, null, null, null, null);
+    }
+
+    public Cursor getProduct(int rowId) throws SQLException{
+        Cursor mCursor = this.proDB.query(true, DATABASE_PRODUCT_TABLE, new String[]{KEY_ProductID, KEY_ProductName}, KEY_ProductID + "=" + rowId, null, null, null, null, null);
+        if(mCursor != null){
+            mCursor.moveToFirst();
+        }
+        return  mCursor;
     }
 }
