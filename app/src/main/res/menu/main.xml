@@ -14,7 +14,7 @@
 
     <item android:id="@+id/action_statistics"
         android:title="@string/title_activity_statistics"
-        android:orderInCategory="2000"
+        android:orderInCategory="103"
         android:showAsAction="ifRoom|withText"/>
 
     <item android:id="@+id/action_weather"
@@ -26,5 +26,10 @@
         android:title="@string/title_activity_purchase"
         android:orderInCategory="2003"
         android:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/action_share"
+        android:title="@string/title_activity_share"
+        android:orderInCategory="104"
+        android:showAsAction="never"/>
 
 </menu>

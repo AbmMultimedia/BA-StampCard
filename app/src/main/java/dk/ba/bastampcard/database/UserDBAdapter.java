@@ -88,5 +88,4 @@ public class UserDBAdapter {
         }
         return  mCursor;
     }
-
 }

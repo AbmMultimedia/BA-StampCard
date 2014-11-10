@@ -6,6 +6,7 @@
     <string name="title_activity_stamps">Stempler</string>
     <string name="title_activity_statistics">Statistik</string>
     <string name="title_activity_weather">Vejret</string>
+    <string name="title_activity_share">Del billeder</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="GpsNotReady">GPS ikke klar</string>

@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -188,6 +189,10 @@ public class MainActivity extends ListActivity {
                 return true;
             case R.id.action_scan:
                 intent = new Intent(getApplicationContext(), PurchaseActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_share:
+                intent = new Intent("dk.ba.bastampcard.activities.ShareActivity");
                 startActivity(intent);
                 return true;
             default:
