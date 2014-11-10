@@ -127,7 +127,6 @@ public class DBAdapter {
                 throw new Error("Error copying database");
             }
         }
-
     }
 
     private boolean checkDataBase(){

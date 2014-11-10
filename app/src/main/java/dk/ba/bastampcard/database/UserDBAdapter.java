@@ -72,5 +72,4 @@ public class UserDBAdapter {
         args.put(KEY_STAMPS, 0);
         return uDB.update(DATABASE_USER_TABLE, args, null, null) > 0;
     }
-
 }

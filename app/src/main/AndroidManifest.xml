@@ -62,6 +62,14 @@
                 <action android:name="dk.ba.bastampcard.activities.WeatherActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.ShareActivity"
+            android:label="@string/title_activity_share">
+            <intent-filter>
+                <action android:name="dk.ba.bastampcard.activities.ShareActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
             </activity>
 
         <meta-data

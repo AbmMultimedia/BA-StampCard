@@ -54,9 +54,9 @@ public class StampActivity extends Activity {
         stamps = getNumberOfStamps();
 
         for(int x = 0; x < stamps; x++) {
-                ImageView image = new ImageView(StampActivity.this);
-                image.setBackgroundResource(R.drawable.cup_color);
-                linearLayout1.addView(image);
+            ImageView image = new ImageView(StampActivity.this);
+            image.setBackgroundResource(R.drawable.cup_color);
+            linearLayout1.addView(image);
         }
 
         for(int i = stamps; i < 5; i++){
