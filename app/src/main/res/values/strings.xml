@@ -23,5 +23,7 @@
     <string name="title_activity_purchase">Purchase</string>
     <string name="register_purchase">Register purchase</string>
     <string name="scan_code">Scan code</string>
+    <string name="confirm_purchase">Confirm purchase</string>
+    <string name="purchase_confirmed">Purchase confirmed</string>
 
 </resources>

@@ -6,6 +6,8 @@ import java.util.Date;
  * Created by Anders on 03-11-2014.
  */
 public class Purchase {
+
+    public static final int STAMP_RATIO = 20;
     private int id;
     private PriceListProduct priceListProduct;
     private Shop shop;
@@ -48,6 +50,10 @@ public class Purchase {
 
     public Date getDate() {
         return date;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public int getConfirmationCode() {

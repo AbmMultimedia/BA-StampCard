@@ -14,9 +14,9 @@ public class UserDBAdapter {
 
     //--- Constants for various fields that are being created in the database ---
     //--- User table - column names ---
-    static final String KEY_UserID = "_id";
-    static final String KEY_USERNAME = "userName";
-    static final String KEY_STAMPS = "stamps";
+    public static final String KEY_UserID = "_id";
+    public static final String KEY_USERNAME = "userName";
+    public static final String KEY_STAMPS = "stamps";
 
     //--- Table name ---
     private static final String DATABASE_USER_TABLE = "user";
@@ -71,6 +71,22 @@ public class UserDBAdapter {
         ContentValues args = new ContentValues();
         args.put(KEY_STAMPS, 0);
         return uDB.update(DATABASE_USER_TABLE, args, null, null) > 0;
+    }
+
+    public boolean updateUserStamps(int userId, int stamps)
+    {
+        String strFilter = "_id=" + userId;
+        ContentValues args = new ContentValues();
+        args.put(KEY_STAMPS, stamps);
+        return uDB.update(DATABASE_USER_TABLE, args, strFilter, null) > 0;
+    }
+
+    public Cursor getUser(int rowId) throws SQLException{
+        Cursor mCursor = this.uDB.query(true, DATABASE_USER_TABLE, new String[]{KEY_UserID, KEY_USERNAME, KEY_STAMPS}, KEY_UserID + "=" + rowId, null, null, null, null, null);
+        if(mCursor != null){
+            mCursor.moveToFirst();
+        }
+        return  mCursor;
     }
 
 }

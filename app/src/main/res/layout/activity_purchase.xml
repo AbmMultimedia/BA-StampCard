@@ -18,12 +18,29 @@
         />
 
     <Button
+        android:id="@+id/btnScanCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scan_code"
-        android:onClick=""/>
+        android:onClick="onClickScanCode"/>
+    <Button
+        android:id="@+id/btnConfirmPurchase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_purchase"
+        android:onClick="onClickConfirmPurchase"/>
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/purchase_list"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
+            </LinearLayout>
+        </ScrollView>
 
 </LinearLayout>

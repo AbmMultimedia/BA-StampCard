@@ -22,5 +22,6 @@
     <string name="title_activity_purchase">Køb</string>
     <string name="register_purchase">Registrer køb</string>
     <string name="scan_code">Scan kode</string>
-
+    <string name="confrim_purchase">Godkend køb</string>
+    <string name="purchase_confirmed">Køb godkendt</string>
 </resources>

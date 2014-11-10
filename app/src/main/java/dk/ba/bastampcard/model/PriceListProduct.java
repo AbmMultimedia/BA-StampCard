@@ -23,11 +23,13 @@ public class PriceListProduct {
         this.id = id;
     }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
     public float getPrice() {
         return price;
     }
-
-    public void setPrice(float price) {
-        this.price = price;
+    public Product getProduct() {
+        return product;
     }
 }

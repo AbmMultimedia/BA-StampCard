@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,8 @@ import java.util.List;
 import dk.ba.bastampcard.R;
 import dk.ba.bastampcard.database.PriceListProductDBAdapter;
 import dk.ba.bastampcard.database.ProductDBAdapter;
+import dk.ba.bastampcard.database.PurchaseDBAdapter;
+import dk.ba.bastampcard.database.UserDBAdapter;
 import dk.ba.bastampcard.model.PriceListProduct;
 import dk.ba.bastampcard.model.Product;
 import dk.ba.bastampcard.model.Purchase;
@@ -34,37 +39,41 @@ import dk.ba.bastampcard.model.User;
 public class PurchaseActivity extends Activity{
 
     List<Purchase> purchaseList;
+    User user;
+
     PriceListProductDBAdapter plpDB;
     ProductDBAdapter pDB;
+    PurchaseDBAdapter purchaseDB;
+    UserDBAdapter uDB;
+
+    LinearLayout linearLayoutPurchases;
+    Button btnScan;
+    Button btnConfirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
+        btnScan = (Button) findViewById(R.id.btnScanCode);
+        btnConfirm = (Button) findViewById(R.id.btnConfirmPurchase);
+        btnConfirm.setVisibility(View.GONE);
+
+        linearLayoutPurchases = (LinearLayout) findViewById(R.id.purchase_list);
+
         purchaseList = new ArrayList<Purchase>();
         plpDB = new PriceListProductDBAdapter(this);
         pDB = new ProductDBAdapter(this);
+        uDB = new UserDBAdapter(this);
+        purchaseDB = new PurchaseDBAdapter(this);
 
-        JSONObject jsPurchase = null;
-        String purchase = "{S:1,C:676767,PL:[{Pid:1,Q:2}]}";
-        try {
-            jsPurchase = new JSONObject(purchase);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        getPurchaseList(jsPurchase);
+        user = getUser(1);
     }
 
-    private void scanCode()
+    public void onClickScanCode(View view)
     {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-        intent.putExtra("SCAN_WIDTH", 800);
-        intent.putExtra("SCAN_HEIGHT", 200);
-        //intent.putExtra("RESULT_DISPLAY_DURATION_MS", 3000L);
-        //intent.putExtra("PROMPT_MESSAGE", "Custom prompt to scan a product");
         startActivityForResult(intent, IntentIntegrator.REQUEST_CODE);
     }
 
@@ -74,16 +83,49 @@ public class PurchaseActivity extends Activity{
         if (result != null) {
             String contents = result.getContents();
             if (contents != null) {
-                Toast.makeText(this, contents,Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, contents,Toast.LENGTH_LONG).show();
+                btnScan.setVisibility(View.GONE);
+                JSONObject jsPurchase = null;
+                String purchase = contents;
+                //String purchase = "{S:1,C:676767,PL:[{Pid:1,Q:2},{Pid:1,Q:3},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2}]}";
+                try {
+                    jsPurchase = new JSONObject(purchase);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                getPurchaseList(jsPurchase);
+
             } else {
 
             }
         }
     }
 
+    private User getUser(int userId)
+    {
+        User u = null;
+        uDB.open();
+        Cursor userCursor = uDB.getUser(userId);
+        if(userCursor.moveToFirst())
+        {
+            int indexUserName = userCursor.getColumnIndex(uDB.KEY_USERNAME);
+            String usersName = userCursor.getString(indexUserName);
+            int indexUserStamps = userCursor.getColumnIndex(uDB.KEY_STAMPS);
+            int userStamps = userCursor.getInt(indexUserStamps);
+
+            u = new User(usersName);
+            u.setStamps(userStamps);
+            u.setId(userId);
+        }
+
+        uDB.close();
+
+        return u;
+    }
+
     public void getPurchaseList(JSONObject joPurchases)
     {
-        User user = new User("Hans");
         Shop shop = null;
         int confirmationCode = 0;
         Date date = new Date();
@@ -119,7 +161,7 @@ public class PurchaseActivity extends Activity{
             if(productCursor.moveToFirst())
             {
                 int productNameIndex = productCursor.getColumnIndex(pDB.KEY_ProductName);
-                product.setName(productCursor.getColumnName(productNameIndex));
+                product.setName(productCursor.getString(productNameIndex));
             }
 
             plpDB.open();
@@ -139,24 +181,64 @@ public class PurchaseActivity extends Activity{
             purchaseList.add(purchase);
         }
 
-        showPurchaces();
+        showPurchases();
     }
 
-    private void showPurchaces()
+    private void showPurchases()
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Log.d(this.getClass().getName(), Integer.toString(purchaseList.size()));
         for(Purchase p : purchaseList)
         {
-            String productName;
+            String productName = p.getPriceListProduct().getProduct().getName();
+            float price = p.getPriceListProduct().getPrice();
+            int quantity = p.getQuantity();
+            float value = p.getValue();
             TextView productInfo = new TextView(this);
-
-            //Toast.makeText(this, dateFormat.format(p.getDate()), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, Float.toString(p.getValue()), Toast.LENGTH_SHORT).show();
+            productInfo.setText(productName +" "+ price +" x"+ quantity +" : "+ value);
+            linearLayoutPurchases.addView(productInfo);
         }
+        btnConfirm.setVisibility(View.VISIBLE);
+
     }
 
+    public void onClickConfirmPurchase(View view)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        purchaseDB.open();
+        for(Purchase p : purchaseList)
+        {
+            int productId = p.getPriceListProduct().getProduct().getId();
+            int shopId = p.getShop().getId();
+            int userId = user.getId();
+            int quantity = p.getQuantity();
+            String date = dateFormat.format(p.getDate());
+            purchaseDB.createPurchase(productId, shopId, userId, quantity, date);
+        }
+        Toast.makeText(this, R.string.purchase_confirmed , Toast.LENGTH_SHORT).show();
+        purchaseDB.close();
+        btnConfirm.setVisibility(View.GONE);
+        btnScan.setVisibility(View.VISIBLE);
+        linearLayoutPurchases.removeAllViews();
 
+        calculateStamps();
+    }
+
+    private void calculateStamps()
+    {
+        int currentStamps = user.getStamps();
+        int newStamps = 0;
+        for(Purchase p : purchaseList)
+        {
+            newStamps =+ (int) p.getValue()/Purchase.STAMP_RATIO ;
+        }
+
+        newStamps = newStamps + currentStamps;
+
+        uDB.open();
+        uDB.updateUserStamps(user.getId(), newStamps);
+        uDB.close();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

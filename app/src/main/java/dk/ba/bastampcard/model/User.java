@@ -35,4 +35,7 @@ public class User {
         this.name = name;
     }
 
+    public void setStamps(int stamps) {
+        this.stamps = stamps;
+    }
 }

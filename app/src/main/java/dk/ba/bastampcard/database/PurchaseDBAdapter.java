@@ -20,7 +20,7 @@ public class PurchaseDBAdapter {
     static final String KEY_PURCHASE_ShopID = "shopId";
     static final String KEY_PURCHASE_UserID = "userId";
     static final String KEY_CONFIRMATION_CODE = "confirmationCode";
-    static final String KEY_VALUE = "value";
+    static final String KEY_QUANTITY = "quantity";
     static final String KEY_DATE = "date";
 
     //--- Table name ---
@@ -59,13 +59,12 @@ public class PurchaseDBAdapter {
     }
 
     //--- insert purchase into database ---
-    public long createPurchase(int productId, int shopId, int userId, String code, int value, String date){
+    public long createPurchase(int productId, int shopId, int userId, int quantity, String date){
         ContentValues values = new ContentValues();
         values.put(KEY_PURCHASE_ProductID, productId);
         values.put(KEY_PURCHASE_ShopID, shopId);
         values.put(KEY_PURCHASE_UserID, userId);
-        values.put(KEY_CONFIRMATION_CODE, code);
-        values.put(KEY_VALUE, value);
+        values.put(KEY_QUANTITY, quantity);
         values.put(KEY_DATE, date);
         return this.purDB.insert(DATABASE_PURCHASE_TABLE, null, values);
     }
