@@ -22,7 +22,7 @@
         android:orderInCategory="102"
         android:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/action_scan"
+    <item android:id="@+id/action_purchase"
         android:title="@string/title_activity_purchase"
         android:orderInCategory="2003"
         android:showAsAction="ifRoom|withText"/>

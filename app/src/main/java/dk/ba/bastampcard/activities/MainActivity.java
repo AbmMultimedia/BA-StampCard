@@ -187,7 +187,7 @@ public class MainActivity extends ListActivity {
                 intent = new Intent("dk.ba.bastampcard.activities.WeatherActivity");
                 startActivity(intent);
                 return true;
-            case R.id.action_scan:
+            case R.id.action_purchase:
                 intent = new Intent(getApplicationContext(), PurchaseActivity.class);
                 startActivity(intent);
                 return true;

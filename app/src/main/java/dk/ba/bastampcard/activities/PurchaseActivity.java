@@ -186,7 +186,6 @@ public class PurchaseActivity extends Activity{
 
     private void showPurchases()
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Log.d(this.getClass().getName(), Integer.toString(purchaseList.size()));
         for(Purchase p : purchaseList)
         {
