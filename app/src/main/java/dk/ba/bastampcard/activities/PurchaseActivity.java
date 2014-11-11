@@ -251,6 +251,7 @@ public class PurchaseActivity extends Activity{
         Toast.makeText(this, R.string.purchase_confirmed , Toast.LENGTH_SHORT).show();
         purchaseDB.close();
         btnConfirm.setVisibility(View.GONE);
+        btnUseStamps.setVisibility(View.GONE);
         btnScan.setVisibility(View.VISIBLE);
         linearLayoutPurchases.removeAllViews();
 

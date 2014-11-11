@@ -35,6 +35,10 @@ public class StampActivity extends Activity {
         setContentView(R.layout.activity_stamps);
 
         uDB = new UserDBAdapter(this);
+    }
+
+    public void onResume(){
+        super.onResume();
         collectStamps();
     }
 
