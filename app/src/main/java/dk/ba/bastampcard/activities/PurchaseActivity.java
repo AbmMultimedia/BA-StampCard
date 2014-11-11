@@ -273,13 +273,30 @@ public class PurchaseActivity extends Activity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.action_stamps:
+                intent = new Intent(getApplicationContext(), StampActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_statistics:
+                intent = new Intent(getApplicationContext(), StatisticsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_weather:
+                intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_purchase:
+                intent = new Intent(getApplicationContext(), PurchaseActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_share:
+                intent = new Intent(getApplicationContext(), ShareActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

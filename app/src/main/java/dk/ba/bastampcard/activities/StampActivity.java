@@ -2,8 +2,11 @@ package dk.ba.bastampcard.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -76,6 +79,42 @@ public class StampActivity extends Activity {
             collectStamps();
         } else {
             Toast.makeText(getApplicationContext(), "Not enough stamps", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()){
+            case R.id.action_stamps:
+                intent = new Intent(getApplicationContext(), StampActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_statistics:
+                intent = new Intent(getApplicationContext(), StatisticsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_weather:
+                intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_purchase:
+                intent = new Intent(getApplicationContext(), PurchaseActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_share:
+                intent = new Intent(getApplicationContext(), ShareActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
