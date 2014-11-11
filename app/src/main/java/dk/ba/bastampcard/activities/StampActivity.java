@@ -69,7 +69,7 @@ public class StampActivity extends Activity {
     public void onClickUseStamps(View v){
         stamps = getNumberOfStamps();
 
-        if(stamps == 5){
+        if(stamps >= 5){
             uDB.open();
             uDB.updateStamps();
             uDB.close();
