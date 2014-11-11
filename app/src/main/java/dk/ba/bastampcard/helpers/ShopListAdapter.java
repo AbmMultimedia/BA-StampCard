@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import dk.ba.bastampcard.R;
@@ -53,11 +54,13 @@ public class ShopListAdapter extends ArrayAdapter<Shop> {
         }
         else {
             float distance = shop.getDistance(latitude, longitude);
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
             if (distance > 1000) {
                 distance = distance / 1000;
-                shopDistance.setText(Float.toString(distance) + " km");
+                shopDistance.setText(df.format(distance) + " km");
             } else {
-                shopDistance.setText(Float.toString(distance) + " m");
+                shopDistance.setText(df.format(distance) + " m");
             }
         }
 

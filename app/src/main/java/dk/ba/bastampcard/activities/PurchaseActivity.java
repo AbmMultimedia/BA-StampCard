@@ -219,6 +219,7 @@ public class PurchaseActivity extends Activity{
         btnConfirm.setVisibility(View.GONE);
         btnScan.setVisibility(View.VISIBLE);
         linearLayoutPurchases.removeAllViews();
+        purchaseList.clear();
 
         calculateStamps();
     }

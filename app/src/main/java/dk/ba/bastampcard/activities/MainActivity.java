@@ -62,6 +62,10 @@ public class MainActivity extends ListActivity {
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locListener = new ShopListLocationListener();
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+        Location location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        showAllShops();
     }
 
     @Override
