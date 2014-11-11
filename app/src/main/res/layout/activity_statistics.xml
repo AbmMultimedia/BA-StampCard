@@ -7,7 +7,7 @@
     <TableLayout
         android:id="@+id/table_statistics"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
 
         <TableRow>
             <TextView android:id="@+id/statistics_cell_date"
@@ -34,5 +34,18 @@
 
         </TableRow>
     </TableLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:id="@+id/scroll_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+        </TableLayout>
+    </ScrollView>
+
+
 
 </LinearLayout>

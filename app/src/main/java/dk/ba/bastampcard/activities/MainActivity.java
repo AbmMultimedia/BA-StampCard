@@ -176,19 +176,18 @@ public class MainActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         Intent intent = null;
         switch (item.getItemId()){
             case R.id.action_stamps:
-                intent = new Intent("dk.ba.bastampcard.activities.StampActivity");
+                intent = new Intent(getApplicationContext(), StampActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_statistics:
-                intent = new Intent("dk.ba.bastampcard.activities.StatisticsActivity");
+                intent = new Intent(getApplicationContext(), StatisticsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_weather:
-                intent = new Intent("dk.ba.bastampcard.activities.WeatherActivity");
+                intent = new Intent(getApplicationContext(), WeatherActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_purchase:
@@ -196,12 +195,11 @@ public class MainActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_share:
-                intent = new Intent("dk.ba.bastampcard.activities.ShareActivity");
+                intent = new Intent(getApplicationContext(), ShareActivity.class);
                 startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        
     }
 }
