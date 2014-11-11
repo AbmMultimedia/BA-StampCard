@@ -319,7 +319,7 @@ public class PurchaseActivity extends Activity{
         tvStampValue.setText( getString(R.string.stamps_value) +": "+ df.format(stampValue));
         TextView tvNewPrice = new TextView(this);
         tvNewPrice.setTextSize(22);
-        tvNewPrice.setText( getString(R.string.total_price) +": "+ df.format(newPrice));
+        tvNewPrice.setText( getString(R.string.your_price) +": "+ df.format(newPrice));
 
         linearLayoutPurchases.addView(tvStampValue);
         linearLayoutPurchases.addView(tvNewPrice);
