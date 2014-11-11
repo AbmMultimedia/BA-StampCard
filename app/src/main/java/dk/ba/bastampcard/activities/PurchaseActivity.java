@@ -214,6 +214,7 @@ public class PurchaseActivity extends Activity{
 
     public void onClickConfirmPurchase(View view)
     {
+        Log.d(getClass().getName(), "Confirm purchase");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         purchaseDB.open();
         for(Purchase p : purchaseList)
@@ -230,9 +231,10 @@ public class PurchaseActivity extends Activity{
         btnConfirm.setVisibility(View.GONE);
         btnScan.setVisibility(View.VISIBLE);
         linearLayoutPurchases.removeAllViews();
-        purchaseList.clear();
 
         calculateStamps();
+
+        purchaseList.clear();
     }
 
     private void calculateStamps()
@@ -245,6 +247,9 @@ public class PurchaseActivity extends Activity{
         }
 
         newStamps = newStamps + currentStamps;
+
+        Log.d(getClass().getName() , "New stamps" + Integer.toString(newStamps));
+        Toast.makeText(this, "New stamps" + Integer.toString(newStamps), Toast.LENGTH_LONG);
 
         uDB.open();
         uDB.updateUserStamps(user.getId(), newStamps);
