@@ -25,4 +25,5 @@
     <string name="scan_code">Scan kode</string>
     <string name="confrim_purchase">Godkend køb</string>
     <string name="purchase_confirmed">Køb godkendt</string>
+    <string name="confirmcode_not_ok">Køb ikke godkendt</string>
 </resources>

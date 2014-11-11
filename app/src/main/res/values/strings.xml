@@ -26,5 +26,6 @@
     <string name="scan_code">Scan code</string>
     <string name="confirm_purchase">Confirm purchase</string>
     <string name="purchase_confirmed">Purchase confirmed</string>
+    <string name="confirmcode_not_ok">Purchase not confirmed</string>
 
 </resources>

@@ -38,6 +38,8 @@ import dk.ba.bastampcard.model.User;
 
 public class PurchaseActivity extends Activity{
 
+    private static final int confirmationCode = 676767;
+
     List<Purchase> purchaseList;
     User user;
 
@@ -94,6 +96,7 @@ public class PurchaseActivity extends Activity{
                     e.printStackTrace();
                 }
 
+
                 getPurchaseList(jsPurchase);
 
             } else {
@@ -127,13 +130,13 @@ public class PurchaseActivity extends Activity{
     public void getPurchaseList(JSONObject joPurchases)
     {
         Shop shop = null;
-        int confirmationCode = 0;
+        int confirmationCodePurchase = 0;
         Date date = new Date();
 
         JSONArray products = null;
         try {
             shop = new Shop(joPurchases.getInt("S"));
-            confirmationCode = joPurchases.getInt("C");
+            confirmationCodePurchase = joPurchases.getInt("C");
             products = joPurchases.getJSONArray("PL");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -181,7 +184,15 @@ public class PurchaseActivity extends Activity{
             purchaseList.add(purchase);
         }
 
-        showPurchases();
+        if(isConfirmationCodeOk(confirmationCodePurchase)){
+            showPurchases();
+        }
+        else{
+            btnScan.setVisibility(View.VISIBLE);
+            Toast.makeText(this, R.string.confirmcode_not_ok, Toast.LENGTH_LONG).show();
+            purchaseList.clear();
+        }
+
     }
 
     private void showPurchases()
@@ -238,6 +249,19 @@ public class PurchaseActivity extends Activity{
         uDB.open();
         uDB.updateUserStamps(user.getId(), newStamps);
         uDB.close();
+    }
+
+    private boolean isConfirmationCodeOk(int confirmCode)
+    {
+        boolean confirmCodeOk = false;
+        if(confirmCode == confirmationCode){
+            confirmCodeOk = true;
+        }
+        else{
+            confirmCodeOk = false;
+        }
+
+        return confirmCodeOk;
     }
 
     @Override
