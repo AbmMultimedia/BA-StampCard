@@ -17,18 +17,34 @@
         android:paddingBottom="25dp"
         />
 
-    <Button
-        android:id="@+id/btnScanCode"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_code"
-        android:onClick="onClickScanCode"/>
-    <Button
-        android:id="@+id/btnConfirmPurchase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_purchase"
-        android:onClick="onClickConfirmPurchase"/>
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_weight="2"
+            android:id="@+id/btnScanCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scan_code"
+            android:onClick="onClickScanCode"/>
+        <Button
+            android:layout_weight="2"
+            android:id="@+id/btnConfirmPurchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_purchase"
+            android:onClick="onClickConfirmPurchase"/>
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btnUseStamps"
+            android:text="@string/useStamps"
+            android:textColor="#db4040"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:onClick="onClickUseStamps"/>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -41,6 +57,6 @@
             android:layout_height="wrap_content">
 
             </LinearLayout>
-        </ScrollView>
+    </ScrollView>
 
 </LinearLayout>

@@ -26,4 +26,8 @@
     <string name="confrim_purchase">Godkend køb</string>
     <string name="purchase_confirmed">Køb godkendt</string>
     <string name="confirmcode_not_ok">Køb ikke godkendt</string>
+    <string name="total_price">Total pris</string>
+    <string name="stamps_value">Værdi af stamps</string>
+    <string name="new_stamps">Nye stamps</string>
+
 </resources>
