@@ -99,7 +99,6 @@ public class PurchaseActivity extends Activity{
         if (result != null) {
             String contents = result.getContents();
             if (contents != null) {
-                //Toast.makeText(this, contents,Toast.LENGTH_LONG).show();
                 btnScan.setVisibility(View.GONE);
                 JSONObject jsPurchase = null;
                 String purchase = contents;
