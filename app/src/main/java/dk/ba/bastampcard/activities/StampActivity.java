@@ -76,19 +76,6 @@ public class StampActivity extends Activity {
         }
     }
 
-    public void onClickUseStamps(View v){
-        stamps = getNumberOfStamps();
-
-        if(stamps >= 5){
-            uDB.open();
-            uDB.updateStamps();
-            uDB.close();
-            collectStamps();
-        } else {
-            Toast.makeText(getApplicationContext(), "Not enough stamps", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

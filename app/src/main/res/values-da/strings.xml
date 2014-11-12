@@ -19,6 +19,7 @@
     <string name="statistics_table_date">Dato</string>
     <string name="statistics_table_product">Product</string>
     <string name="statistics_table_shop">Café</string>
+    <string name="statistics_table_quantity">Antal</string>
 
     <!-- Tekst for purchase activity -->
     <string name="title_activity_purchase">Køb</string>

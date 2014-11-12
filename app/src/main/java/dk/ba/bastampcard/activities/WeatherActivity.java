@@ -30,12 +30,11 @@ public class WeatherActivity extends Activity {
 
     WebView webViewJava;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -43,12 +42,8 @@ public class WeatherActivity extends Activity {
         longitude = location.getLongitude();
         latitude = location.getLatitude();
 
-        webViewJava = (WebView) findViewById(R.id.webView);
-        showWeather();
-    }
 
-    private void showWeather()
-    {
+        WebView webViewJava = (WebView) findViewById(R.id.webView);
         webViewJava.loadUrl("http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&mode=html");
         webViewJava.setWebViewClient(new WebViewClient());
     }
@@ -62,21 +57,11 @@ public class WeatherActivity extends Activity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,locationListener);
     }
 
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        locationManager.removeUpdates(locationListener);
-        locationListener = null;
-    }
-
     public class WeatherLocationListener implements LocationListener{
         @Override
         public void onLocationChanged(Location location) {
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-
-            showWeather();
         }
 
         @Override
