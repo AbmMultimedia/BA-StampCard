@@ -35,6 +35,10 @@ public class StampActivity extends Activity {
         setContentView(R.layout.activity_stamps);
 
         uDB = new UserDBAdapter(this);
+    }
+
+    public void onResume(){
+        super.onResume();
         collectStamps();
     }
 
@@ -56,15 +60,18 @@ public class StampActivity extends Activity {
         linearLayout1.removeAllViewsInLayout();
         stamps = getNumberOfStamps();
 
+
         for(int x = 0; x < stamps; x++) {
             ImageView image = new ImageView(StampActivity.this);
-            image.setBackgroundResource(R.drawable.cup_color);
+            image.setPadding(10, 10, 10, 10);
+            image.setImageResource(R.drawable.cup_color);
             linearLayout1.addView(image);
         }
 
         for(int i = stamps; i < 5; i++){
             ImageView image = new ImageView(StampActivity.this);
-            image.setBackgroundResource(R.drawable.cup_blackwhite);
+            image.setPadding(10, 10, 10, 10);
+            image.setImageResource(R.drawable.cup_blackwhite);
             linearLayout1.addView(image);
         }
     }

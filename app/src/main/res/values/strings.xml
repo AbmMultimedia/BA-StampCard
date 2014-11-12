@@ -21,11 +21,16 @@
     <string name="statistics_table_product">Product</string>
     <string name="statistics_table_shop">Shop</string>
 
+    <!-- Text for purchase activity -->
     <string name="title_activity_purchase">Purchase</string>
     <string name="register_purchase">Register purchase</string>
     <string name="scan_code">Scan code</string>
     <string name="confirm_purchase">Confirm purchase</string>
     <string name="purchase_confirmed">Purchase confirmed</string>
     <string name="confirmcode_not_ok">Purchase not confirmed</string>
+    <string name="total_price">Price total</string>
+    <string name="stamps_value">Stamps value</string>
+    <string name="new_stamps">New stamps</string>
+    <string name="your_price">Your pris</string>
 
 </resources>

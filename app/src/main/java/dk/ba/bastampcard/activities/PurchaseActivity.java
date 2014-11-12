@@ -19,7 +19,9 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +44,7 @@ public class PurchaseActivity extends Activity{
 
     List<Purchase> purchaseList;
     User user;
+    float totalValue;
 
     PriceListProductDBAdapter plpDB;
     ProductDBAdapter pDB;
@@ -51,6 +54,11 @@ public class PurchaseActivity extends Activity{
     LinearLayout linearLayoutPurchases;
     Button btnScan;
     Button btnConfirm;
+    Button btnUseStamps;
+
+    DecimalFormat df;
+    boolean payWithStamps;
+    int stampUsed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,9 @@ public class PurchaseActivity extends Activity{
         btnConfirm = (Button) findViewById(R.id.btnConfirmPurchase);
         btnConfirm.setVisibility(View.GONE);
 
+        btnUseStamps = (Button) findViewById(R.id.btnUseStamps);
+        btnUseStamps.setVisibility(View.GONE);
+
         linearLayoutPurchases = (LinearLayout) findViewById(R.id.purchase_list);
 
         purchaseList = new ArrayList<Purchase>();
@@ -70,6 +81,9 @@ public class PurchaseActivity extends Activity{
         purchaseDB = new PurchaseDBAdapter(this);
 
         user = getUser(1);
+
+        df = new DecimalFormat("###,##0.00");
+        payWithStamps = false;
     }
 
     public void onClickScanCode(View view)
@@ -96,8 +110,8 @@ public class PurchaseActivity extends Activity{
                     e.printStackTrace();
                 }
 
-
                 getPurchaseList(jsPurchase);
+                showUseStamps();
 
             } else {
 
@@ -197,6 +211,7 @@ public class PurchaseActivity extends Activity{
 
     private void showPurchases()
     {
+        totalValue = 0;
         Log.d(this.getClass().getName(), Integer.toString(purchaseList.size()));
         for(Purchase p : purchaseList)
         {
@@ -204,16 +219,24 @@ public class PurchaseActivity extends Activity{
             float price = p.getPriceListProduct().getPrice();
             int quantity = p.getQuantity();
             float value = p.getValue();
+            totalValue += value;
             TextView productInfo = new TextView(this);
             productInfo.setText(productName +" "+ price +" x"+ quantity +" : "+ value);
             linearLayoutPurchases.addView(productInfo);
         }
+
+        TextView totalPrice = new TextView(this);
+        totalPrice.setTextSize(22);
+        totalPrice.setText( getString(R.string.total_price) +": "+ df.format(totalValue));
+
+        linearLayoutPurchases.addView(totalPrice);
         btnConfirm.setVisibility(View.VISIBLE);
 
     }
 
     public void onClickConfirmPurchase(View view)
     {
+        Log.d(getClass().getName(), "Confirm purchase");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         purchaseDB.open();
         for(Purchase p : purchaseList)
@@ -228,23 +251,34 @@ public class PurchaseActivity extends Activity{
         Toast.makeText(this, R.string.purchase_confirmed , Toast.LENGTH_SHORT).show();
         purchaseDB.close();
         btnConfirm.setVisibility(View.GONE);
+        btnUseStamps.setVisibility(View.GONE);
         btnScan.setVisibility(View.VISIBLE);
         linearLayoutPurchases.removeAllViews();
-        purchaseList.clear();
 
         calculateStamps();
+
+        if(payWithStamps){
+            payWithStamps = false;
+        }
+
+        purchaseList.clear();
     }
 
     private void calculateStamps()
     {
+
         int currentStamps = user.getStamps();
-        int newStamps = 0;
-        for(Purchase p : purchaseList)
+        int newStamps = (int) totalValue/Purchase.STAMP_PURCHASE_RATIO ;
+        newStamps = newStamps + currentStamps;
+        user.setStamps(newStamps);
+
+        if(payWithStamps)
         {
-            newStamps =+ (int) p.getValue()/Purchase.STAMP_RATIO ;
+            newStamps = user.getStamps() - stampUsed;
+            user.setStamps(newStamps);
         }
 
-        newStamps = newStamps + currentStamps;
+        Toast.makeText(this, getString(R.string.new_stamps) +": "+ Integer.toString(newStamps), Toast.LENGTH_LONG).show();
 
         uDB.open();
         uDB.updateUserStamps(user.getId(), newStamps);
@@ -262,6 +296,46 @@ public class PurchaseActivity extends Activity{
         }
 
         return confirmCodeOk;
+    }
+
+    public void onClickUseStamps(View view)
+    {
+        payWithStamps = true;
+        float stampValue = user.getStamps()*Purchase.STAMP_USE_RATIO;
+        float newPrice = 0;
+
+        if(stampValue <= totalValue) {
+            newPrice = totalValue - stampValue;
+            stampUsed = (int) stampValue/Purchase.STAMP_USE_RATIO;
+        }
+        else{
+            newPrice = 0;
+            stampUsed = (int) totalValue/Purchase.STAMP_USE_RATIO;
+        }
+
+        totalValue = newPrice;
+
+        TextView tvStampValue = new TextView(this);
+        tvStampValue.setText( getString(R.string.stamps_value) +": "+ df.format(stampValue));
+        TextView tvNewPrice = new TextView(this);
+        tvNewPrice.setTextSize(22);
+        tvNewPrice.setText( getString(R.string.your_price) +": "+ df.format(newPrice));
+
+        linearLayoutPurchases.addView(tvStampValue);
+        linearLayoutPurchases.addView(tvNewPrice);
+
+        btnUseStamps.setVisibility(View.GONE);
+
+    }
+
+    private void showUseStamps()
+    {
+        if(user.getStamps() < 5){
+            btnUseStamps.setVisibility(View.GONE);
+        }
+        else{
+            btnUseStamps.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -7,7 +7,8 @@ import java.util.Date;
  */
 public class Purchase {
 
-    public static final int STAMP_RATIO = 20;
+    public static final int STAMP_PURCHASE_RATIO = 35;
+    public static final int STAMP_USE_RATIO = 7;
     private int id;
     private PriceListProduct priceListProduct;
     private Shop shop;
