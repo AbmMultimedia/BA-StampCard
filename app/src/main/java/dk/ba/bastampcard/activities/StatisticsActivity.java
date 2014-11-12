@@ -51,6 +51,8 @@ public class StatisticsActivity extends Activity{
             String purchaseDate = cursor.getString(0);
             String shopName = cursor.getString(1);
             String productName = cursor.getString(2);
+            int quantity = cursor.getInt(3);
+            String stringQuantity = Integer.toString(quantity);
 
             //Creating new rows to the statistics table
             TableRow tr = new TableRow(this);
@@ -79,6 +81,14 @@ public class StatisticsActivity extends Activity{
             labelProduct.setLayoutParams(productParams); //Gets the layout parameters from TextView with id statistics_cell_product, so header and rows have the same layout
             labelProduct.setGravity(Gravity.CENTER);
             tr.addView(labelProduct);
+
+            TextView quantityField = (TextView) findViewById(R.id.statistics_cell_quantity);
+            ViewGroup.LayoutParams quantityParams = quantityField.getLayoutParams();
+            TextView labelQuantity = new TextView(this);
+            labelQuantity.setText(stringQuantity);
+            labelQuantity.setLayoutParams(quantityParams);
+            labelQuantity.setGravity(Gravity.CENTER);
+            tr.addView(labelQuantity);
 
             statisticsTable.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         } while (cursor.moveToNext());

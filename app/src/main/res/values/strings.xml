@@ -20,6 +20,7 @@
     <string name="statistics_table_date">Date</string>
     <string name="statistics_table_product">Product</string>
     <string name="statistics_table_shop">Shop</string>
+    <string name="statistics_table_quantity">Quantity</string>
 
     <!-- Text for purchase activity -->
     <string name="title_activity_purchase">Purchase</string>
