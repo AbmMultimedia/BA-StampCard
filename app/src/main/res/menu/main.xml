@@ -2,29 +2,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="dk.ba.bastampcard.activities.MainActivity" >
+
+    <item android:id="@+id/home"
+        android:title="@string/title_activity_main"
+        android:orderInCategory="100"
+        android:showAsAction="never"/>
+
     <item android:id="@+id/action_stamps"
         android:title="@string/menu_stamps"
         android:orderInCategory="101"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
 
     <item android:id="@+id/action_purchase"
         android:title="@string/title_activity_purchase"
         android:orderInCategory="102"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
 
     <item android:id="@+id/action_statistics"
         android:title="@string/title_activity_statistics"
         android:orderInCategory="103"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
 
     <item android:id="@+id/action_weather"
         android:title="@string/title_activity_weather"
         android:orderInCategory="105"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
 
     <item android:id="@+id/action_share"
         android:title="@string/title_activity_share"
         android:orderInCategory="104"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="never"/>
 
 </menu>

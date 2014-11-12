@@ -348,6 +348,11 @@ public class PurchaseActivity extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
         switch (item.getItemId()){
+            case R.id.home:
+                Intent homeIntent = new Intent(this, MainActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+                return true;
             case R.id.action_stamps:
                 intent = new Intent(getApplicationContext(), StampActivity.class);
                 startActivity(intent);
