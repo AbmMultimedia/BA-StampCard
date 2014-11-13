@@ -42,13 +42,14 @@ public class ShopLocationActivity extends Activity {
         long shopId = 1;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            //Getting the ship id that is send to the activity
+            //Getting the shop id that is send to the activity
             shopId = extras.getInt("SHOP_ID");
         }
 
         //preparing local variables
         db = new DBAdapter(this);
         sDB = new ShopDBAdapter(this);
+        //Getting the google map from the fragment
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         shop = getShopInfo(shopId);
