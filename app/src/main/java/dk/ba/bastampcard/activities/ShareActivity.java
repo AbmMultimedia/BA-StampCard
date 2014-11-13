@@ -27,6 +27,7 @@ public class ShareActivity extends Activity {
         setContentView(R.layout.activity_share);
     }
 
+    //--- select image from gallery ---
     public void clickOnImage(View view){
         Intent intent = new Intent();
         intent.setAction(intent.ACTION_GET_CONTENT);
@@ -34,6 +35,7 @@ public class ShareActivity extends Activity {
         startActivityForResult(intent, 1);
     }
 
+    //--- the data about the selected image is being returned ---
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == 1){
@@ -45,6 +47,7 @@ public class ShareActivity extends Activity {
         }
     }
 
+    //--- share the image with others ---
     public void onClickShare(View view){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
@@ -52,11 +55,13 @@ public class ShareActivity extends Activity {
         startActivity(Intent.createChooser(intent, "Image has been sent..."));
     }
 
+    //--- show on device the selected image ---
     public void showImage(){
         ImageView imageView = (ImageView) findViewById(R.id.viewImage);
         imageView.setImageURI(uriImage); //The path to the image
     }
 
+    //--- Creates a Menu ---
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -64,6 +69,7 @@ public class ShareActivity extends Activity {
         return true;
     }
 
+    //--- When a menu item has been selected the activity is being activated ---
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;

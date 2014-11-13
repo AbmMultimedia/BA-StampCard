@@ -29,20 +29,21 @@ public class WeatherActivity extends Activity {
     private double latitude;
 
     WebView webViewJava;
-
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
+        //--- locationManger gets the location from the device ---
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         longitude = location.getLongitude();
         latitude = location.getLatitude();
 
-
+        //--- The device connects to an external url and with the returned longitude and latitude
+        // values it sets the your location in the WebView
         WebView webViewJava = (WebView) findViewById(R.id.webView);
         webViewJava.loadUrl("http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&mode=html");
         webViewJava.setWebViewClient(new WebViewClient());
@@ -52,11 +53,13 @@ public class WeatherActivity extends Activity {
     public void onResume(){
         super.onResume();
 
+        //---
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new WeatherLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,locationListener);
     }
 
+    //--- WeatherLocationListener listens on where the device is periodically via LocationProvider ---
     public class WeatherLocationListener implements LocationListener{
         @Override
         public void onLocationChanged(Location location) {
@@ -77,15 +80,14 @@ public class WeatherActivity extends Activity {
 
         @Override
         public void onProviderEnabled(String s) {
-
         }
 
         @Override
         public void onProviderDisabled(String s) {
-
         }
     }
 
+    //--- Creates a Menu ---
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -93,6 +95,7 @@ public class WeatherActivity extends Activity {
         return true;
     }
 
+    //--- When a menu item has been selected the activity is being activated ---
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
