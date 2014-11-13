@@ -106,6 +106,7 @@ public class Shop {
         priceList.add(priceListProduct);
     }
 
+    //Calculate distance to the shop
     public float getDistance(double currentLatitude, double currentLongitude){
         float[] distances = new float[1];
         Location.distanceBetween(currentLatitude, currentLongitude, this.latitude, this.longitude, distances);

@@ -110,7 +110,7 @@ public class ShopLocationActivity extends Activity {
                             .position(shopLocation)
                             .title(shop.getName())
                             .snippet(shop.getAddress() + " " + shop.getPostalCode() + " " + shop.getCity())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.shop_icon))
 
             );
         }
