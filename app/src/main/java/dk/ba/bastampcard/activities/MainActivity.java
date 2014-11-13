@@ -26,6 +26,9 @@ import dk.ba.bastampcard.model.Shop;
 import dk.ba.bastampcard.database.DBAdapter;
 import dk.ba.bastampcard.database.ShopDBAdapter;
 
+/**
+ * Created by Anders.
+ */
 public class MainActivity extends ListActivity {
 
     private LocationManager locManager;
@@ -41,16 +44,19 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Preparing local variables
         shops = new ArrayList<Shop>();
         db = new DBAdapter(this);
         sDB = new ShopDBAdapter(this);
 
+        //Writing database to device if it doesn't exist
         try {
             db.createDataBase();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        //Loading shops from the database and showing it in a ListView
         getAllShops();
         showAllShops();
     }
@@ -59,6 +65,8 @@ public class MainActivity extends ListActivity {
     protected void onResume()
     {
         super.onResume();
+
+        //Preparing the location listener and getting the location of the device
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locListener = new ShopListLocationListener();
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
@@ -67,6 +75,8 @@ public class MainActivity extends ListActivity {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
+
+        //Updating the list of shops
         showAllShops();
     }
 
@@ -74,6 +84,7 @@ public class MainActivity extends ListActivity {
     protected void onPause()
     {
         super.onPause();
+        //Removing the location listener
         locManager.removeUpdates(locListener);
         locManager = null;
     }
@@ -83,6 +94,7 @@ public class MainActivity extends ListActivity {
         super.onStop();
     }
 
+    //Getting the shops information from the database
     private void getAllShops()
     {
         db.open();
@@ -117,21 +129,25 @@ public class MainActivity extends ListActivity {
         db.close();
     }
 
+    //Showing the shops in a ListView
     private void showAllShops() {
         ShopListAdapter shopListAdapter = new ShopListAdapter(this, shops, latitude, longitude);
         setListAdapter(shopListAdapter);
     }
 
-
+    //Creating the specific location listener.
     public class ShopListLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location location) {
+            //Getting the location of the device
             latitude = location.getLatitude();
             longitude = location.getLongitude();
+            //Update the list of shops
             showAllShops();
         }
 
+        //Checking the status of the location provider
         @Override
         public void onStatusChanged(String provider, int status, Bundle bundle) {
             if(status == LocationProvider.AVAILABLE)
@@ -146,7 +162,6 @@ public class MainActivity extends ListActivity {
             {
                 Toast.makeText(getApplicationContext(), "Waiting for Gps signal", Toast.LENGTH_SHORT).show();
             }
-
         }
 
         @Override
@@ -160,13 +175,14 @@ public class MainActivity extends ListActivity {
         }
     }
 
+    //When a list item is clicked
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Do something when a list item is clicked
+        //Get the id of the shop from the Tag in the view
         int shopId = (Integer) v.getTag();
+        //Start the activity ShopLocation
         Intent intent = new Intent(getApplicationContext(), ShopLocationActivity.class);
         intent.putExtra("SHOP_ID", shopId);
         startActivity(intent);
-
     }
 
     @Override

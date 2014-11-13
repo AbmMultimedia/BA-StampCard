@@ -38,6 +38,9 @@ import dk.ba.bastampcard.model.Purchase;
 import dk.ba.bastampcard.model.Shop;
 import dk.ba.bastampcard.model.User;
 
+/**
+ * Created by Anders.
+ */
 public class PurchaseActivity extends Activity{
 
     private static final int confirmationCode = 676767;
@@ -65,27 +68,31 @@ public class PurchaseActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
+        //Preparing view layout, hiding and showing buttons
         btnScan = (Button) findViewById(R.id.btnScanCode);
         btnConfirm = (Button) findViewById(R.id.btnConfirmPurchase);
         btnConfirm.setVisibility(View.GONE);
-
         btnUseStamps = (Button) findViewById(R.id.btnUseStamps);
         btnUseStamps.setVisibility(View.GONE);
-
         linearLayoutPurchases = (LinearLayout) findViewById(R.id.purchase_list);
 
+        //Preparing database and list of purchases
         purchaseList = new ArrayList<Purchase>();
         plpDB = new PriceListProductDBAdapter(this);
         pDB = new ProductDBAdapter(this);
         uDB = new UserDBAdapter(this);
         purchaseDB = new PurchaseDBAdapter(this);
 
+        //Getting the device user
         user = getUser(1);
 
+        //Setting decimal format for prices
         df = new DecimalFormat("###,##0.00");
+
         payWithStamps = false;
     }
 
+    //Request a QR code from the camera
     public void onClickScanCode(View view)
     {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
@@ -93,16 +100,21 @@ public class PurchaseActivity extends Activity{
         startActivityForResult(intent, IntentIntegrator.REQUEST_CODE);
     }
 
+    //Method called when the result comes back from the camera
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //Getting the result
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (result != null) {
+            //Getting the content of the result
             String contents = result.getContents();
             if (contents != null) {
                 btnScan.setVisibility(View.GONE);
                 JSONObject jsPurchase = null;
                 String purchase = contents;
                 //String purchase = "{S:1,C:676767,PL:[{Pid:1,Q:2},{Pid:1,Q:3},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2},{Pid:1,Q:2}]}";
+
+                //Creating an JSON object from the result
                 try {
                     jsPurchase = new JSONObject(purchase);
                 } catch (JSONException e) {
@@ -118,6 +130,7 @@ public class PurchaseActivity extends Activity{
         }
     }
 
+    //Getting information about the user from the database
     private User getUser(int userId)
     {
         User u = null;
@@ -140,13 +153,15 @@ public class PurchaseActivity extends Activity{
         return u;
     }
 
+    //Creating the list of purchases from the JSON object
     public void getPurchaseList(JSONObject joPurchases)
     {
         Shop shop = null;
         int confirmationCodePurchase = 0;
         Date date = new Date();
-
         JSONArray products = null;
+
+        //Getting information from the JSON object
         try {
             shop = new Shop(joPurchases.getInt("S"));
             confirmationCodePurchase = joPurchases.getInt("C");
@@ -155,6 +170,7 @@ public class PurchaseActivity extends Activity{
             e.printStackTrace();
         }
 
+        //Getting information from the database about the products in the JSON array
         for(int i=0; i < products.length(); i++)
         {
             JSONObject joProduct = null;
@@ -197,6 +213,7 @@ public class PurchaseActivity extends Activity{
             purchaseList.add(purchase);
         }
 
+        //Checking the confirmation code
         if(isConfirmationCodeOk(confirmationCodePurchase)){
             showPurchases();
         }
@@ -208,6 +225,7 @@ public class PurchaseActivity extends Activity{
 
     }
 
+    //Showing information about the bought products in the view to the user
     private void showPurchases()
     {
         totalValue = 0;
@@ -233,6 +251,7 @@ public class PurchaseActivity extends Activity{
 
     }
 
+    //Confirm the purchase and store them in the database
     public void onClickConfirmPurchase(View view)
     {
         Log.d(getClass().getName(), "Confirm purchase");
@@ -254,6 +273,7 @@ public class PurchaseActivity extends Activity{
         btnScan.setVisibility(View.VISIBLE);
         linearLayoutPurchases.removeAllViews();
 
+        //Calculate the new number of stamps for the user.
         calculateStamps();
 
         if(payWithStamps){
@@ -263,9 +283,9 @@ public class PurchaseActivity extends Activity{
         purchaseList.clear();
     }
 
+    //Calculate the number of stamps the user gets from the purchase
     private void calculateStamps()
     {
-
         int currentStamps = user.getStamps();
         int newStamps = (int) totalValue/Purchase.STAMP_PURCHASE_RATIO ;
         newStamps = newStamps + currentStamps;
@@ -279,11 +299,13 @@ public class PurchaseActivity extends Activity{
 
         Toast.makeText(this, getString(R.string.new_stamps) +": "+ Integer.toString(newStamps), Toast.LENGTH_LONG).show();
 
+        //Store the number of stamps in the database
         uDB.open();
         uDB.updateUserStamps(user.getId(), newStamps);
         uDB.close();
     }
 
+    //Check the confirmation code
     private boolean isConfirmationCodeOk(int confirmCode)
     {
         boolean confirmCodeOk = false;
@@ -297,6 +319,7 @@ public class PurchaseActivity extends Activity{
         return confirmCodeOk;
     }
 
+    //Use stamps to pay for the purchases
     public void onClickUseStamps(View view)
     {
         payWithStamps = true;
@@ -327,6 +350,7 @@ public class PurchaseActivity extends Activity{
 
     }
 
+    //Checking if the user is can use stamps to pay for the purchases
     private void showUseStamps()
     {
         if(user.getStamps() < 5){

@@ -21,7 +21,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
+/**
+ * Created by Anders.
+ */
 public class ShopLocationActivity extends Activity {
 
     Context context = this;
@@ -36,12 +38,15 @@ public class ShopLocationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_location);
 
+        //Setting default shop id
         long shopId = 1;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            //Getting the ship id that is send to the activity
             shopId = extras.getInt("SHOP_ID");
         }
 
+        //preparing local variables
         db = new DBAdapter(this);
         sDB = new ShopDBAdapter(this);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -50,9 +55,11 @@ public class ShopLocationActivity extends Activity {
 
         shopLocation = new LatLng(shop.getLatitude(), shop.getLongitude());
 
+        //Showing the map
         showMap(map);
     }
 
+    //Getting information about the shop from the database
     private Shop getShopInfo(long shopId)
     {
         db.open();
@@ -89,13 +96,16 @@ public class ShopLocationActivity extends Activity {
         return shop = new Shop(name, address, postalCode, city, latitude, longitude);
     }
 
+    //Showing the map
     public void showMap(GoogleMap map)
     {
         if (map != null)
         {
+            //Map settings
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             map.setMyLocationEnabled(true);
 
+            //Add shop location to the map
             map.addMarker(new MarkerOptions()
                             .position(shopLocation)
                             .title(shop.getName())
@@ -105,10 +115,11 @@ public class ShopLocationActivity extends Activity {
             );
         }
 
+        //Moving the map to show the location of the shop
         map.moveCamera(CameraUpdateFactory.newLatLng(shopLocation));
 
         // Change zoom level, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(10), 1000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(15), 1000, null);
     }
 
 
