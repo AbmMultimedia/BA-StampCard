@@ -31,45 +31,6 @@ public class DBAdapter {
     //--- Database version ---
     static final int DATABASE_VERSION = 5;
 
-    /**
-    //--- Table Create Statements ---
-    //--- Shop table create statement ---
-       static final String CREATE_TABLE_SHOP = "create table shop(" +
-            ShopDBAdapter.KEY_RowID + " integer primary key autoincrement, " +
-            ShopDBAdapter.KEY_NAME + " text not null, " +
-            ShopDBAdapter.KEY_ADDRESS + " text not null, " +
-            ShopDBAdapter.KEY_POSTAL + " integer not null, " +
-            ShopDBAdapter.KEY_CITY + " text not null);";
-
-    //--- User table create statement ---
-    static final String CREATE_TABLE_USER = "create table user(" +
-            UserDBAdapter.KEY_UserID + " integer primary key autoincrement, " +
-            UserDBAdapter.KEY_USERNAME + " text not null);";
-
-    //--- Purchase table create statement ---
-    static final String CREATE_TABLE_PURCHASE = "create table purchase(" +
-            PurchaseDBAdapter.KEY_PurchaseID + " integer primary key autoincrement, " +
-            PurchaseDBAdapter.KEY_PURCHASE_ProductID + " integer not null, " +
-            PurchaseDBAdapter.KEY_PURCHASE_ShopID + " integer not null, " +
-            PurchaseDBAdapter.KEY_PURCHASE_UserID + " integer not null, " +
-            PurchaseDBAdapter.KEY_CONFIRMATION_CODE + " text not null, " +
-            PurchaseDBAdapter.KEY_VALUE + " integer not null, " +
-            PurchaseDBAdapter.KEY_DATE + " text not null);";
-
-    //--- Product table create statement ---
-    static final String CREATE_TABLE_PRODUCT = "create table product(" +
-            ProductDBAdapter.KEY_ProductID + " integer primary key autoincrement, " +
-            ProductDBAdapter.KEY_ProductName + " text not null);";
-
-    //--- PriceListProduct table create statement ---
-    static final String CREATE_TABLE_PriceListProduct = "create table priceListProduct(" +
-            PriceListProductDBAdapter.KEY_PriceListProductID + " integer primary key autoincrement, " +
-            PriceListProductDBAdapter.KEY_ProductID + " integer not null, " +
-            PriceListProductDBAdapter.KEY_ShopID + " integer not null, " +
-            PriceListProductDBAdapter.KEY_PRICE + " integer not null);";
-
-     **/
-
     final Context context;
     DatabaseHelper DBHelper;
     SQLiteDatabase db;

@@ -42,6 +42,7 @@ public class StampActivity extends Activity {
         collectStamps();
     }
 
+    //--- retrieve the number of stamps from the database  ---
     public int getNumberOfStamps(){
         uDB.open();
         int numberOfStamps = 0;
@@ -55,11 +56,13 @@ public class StampActivity extends Activity {
         return numberOfStamps;
     }
 
+    //--- Inside a LinearLayout stamps are added. Stamps get activated by setImageResource(R.drawable.cup_color)
+    // if the number of stamps from database are less than stamps. If the number of stamps from database are
+    // less than 5 the rest of the images are sat to setImageResource(R.drawable.cup_blackwhite) ---
     public void collectStamps(){
         LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.stamp_img);
         linearLayout1.removeAllViewsInLayout();
         stamps = getNumberOfStamps();
-
 
         for(int x = 0; x < stamps; x++) {
             ImageView image = new ImageView(StampActivity.this);

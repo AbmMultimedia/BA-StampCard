@@ -69,8 +69,11 @@ public class PurchaseDBAdapter {
         return this.purDB.insert(DATABASE_PURCHASE_TABLE, null, values);
     }
 
+    //--- select data from tables ---
     public Cursor getStatistics(){
-        String query = "select pur.date, s.shopName, pro.productName, pur.quantity from purchase pur join shop s on pur.shopId=s._id join product pro on pur.productId=pro._id";
+        String query = "select pur.date, s.shopName, pro.productName, pur.quantity" +
+                " from purchase pur join shop s on pur.shopId = s._id" +
+                " join product pro on pur.productId = pro._id";
         Cursor cursor = purDB.rawQuery(query, null);
         return cursor;
     }

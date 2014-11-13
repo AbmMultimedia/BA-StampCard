@@ -90,12 +90,14 @@ public class StatisticsActivity extends Activity{
             labelQuantity.setGravity(Gravity.CENTER);
             tr.addView(labelQuantity);
 
+            //--- Adds row to the row ---
             statisticsTable.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         } while (cursor.moveToNext());
 
         purDB.close();
     }
 
+    //--- Creates a Menu ---
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -103,6 +105,7 @@ public class StatisticsActivity extends Activity{
         return true;
     }
 
+    //--- When a menu item has been selected the activity is being activated ---
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
