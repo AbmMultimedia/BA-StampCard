@@ -9,11 +9,12 @@
     <string name="title_activity_share">Del billeder</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="useStamps">BRUG STAMPS</string>
     <string name="GpsNotReady">GPS ikke klar</string>
-
     <string name="title_activity_shop_location">Cafeens placering</string>
     <string name="list_item_shop_distance">Afstand</string>
     <string name="stamps">Antal Stempler</string>
+    <string name="menu_stamps">Stamps</string>
 
     <!-- Tekst på statistik siden -->
     <string name="statistics_table_date">Dato</string>
@@ -25,7 +26,7 @@
     <string name="title_activity_purchase">Køb</string>
     <string name="register_purchase">Registrer køb</string>
     <string name="scan_code">Scan kode</string>
-    <string name="confrim_purchase">Godkend køb</string>
+    <string name="confirm_purchase">Godkend køb</string>
     <string name="purchase_confirmed">Køb godkendt</string>
     <string name="confirmcode_not_ok">Køb ikke godkendt</string>
     <string name="total_price">Total pris</string>
